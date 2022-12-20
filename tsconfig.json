@@ -16,6 +16,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@shared/*": ["src/shared/*"],
+      "@auth/*": ["src/modules/auth/*"],
+      "@prisma/*": ["src/modules/prisma/*"],
+      "@crypto/*": ["src/modules/crypto/*"],
+      "@user/*": ["src/modules/user/*"]
+    }
   }
 }
