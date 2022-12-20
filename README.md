@@ -2,7 +2,7 @@
   <h1>Cryptodistrict</h1>
 </span>
 
-## Table of contents
+### Table of contents
 
 1. [Description](#description)
 2. [Implementation](#implementation)
