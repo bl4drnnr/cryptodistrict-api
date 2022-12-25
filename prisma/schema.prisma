@@ -11,18 +11,18 @@ datasource db {
 model User {
     id String @id @default(uuid()) @db.Uuid
 
-    firstName        String? @db.Citext
-    lastName         String? @db.Citext
+    first_name       String? @map("firstName") @db.Citext
+    last_name        String? @map("lastName") @db.Citext
     email            String  @unique
     password         String
     twitter          String
-    linkedIn         String
-    personalWebsite  String
+    linked_in        String @map("linkedIn")
+    personal_website String @map("personalWebsite")
     title            String
     bio              String
 
-    updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(6)
-    createdAt DateTime @default(now()) @db.Timestamptz(6)
+    updated_at DateTime @default(now()) @map("updatedAt") @updatedAt @db.Timestamptz(6)
+    created_at DateTime @default(now()) @map("createdAt") @db.Timestamptz(6)
 
     @@map("user")
 }

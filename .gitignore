@@ -37,3 +37,4 @@ lerna-debug.log*
 .env*
 package-lock.json
 prisma/migrations/*
+!prisma/migrations/00000000000001_init_database_extensions
