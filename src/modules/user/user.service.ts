@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@prisma/prisma.service';
 import { AuthService } from '@auth/auth.service';
 import { WrongPasswordException } from './exceptions/wrong-password.exception';
+import { RegisterDto } from '@user/dto/register.dto';
 
 @Injectable()
 export class UserService {
@@ -15,27 +16,17 @@ export class UserService {
     // return this.authService.generateTokens({ userId: user.id });
   }
 
-  async register({
-    firstName,
-    lastName,
-    email,
-    password
-  }: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-  }) {
-    await this.prisma.user.findFirstOrThrow({ where: { email } });
+  async register(registrationDto: RegisterDto) {
+    await this.prisma.user.findFirstOrThrow({
+      where: { email: registrationDto.email }
+    });
 
-    const hashedPassword = await bcryptjs.hash(password, 10);
+    const hashedPassword = await bcryptjs.hash(registrationDto.password, 10);
 
     return await this.prisma.user.create({
       data: {
-        email,
-        password: hashedPassword,
-        firstName,
-        lastName
+        ...registrationDto,
+        password: hashedPassword
       }
     });
   }
