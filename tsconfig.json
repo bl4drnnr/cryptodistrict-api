@@ -22,7 +22,8 @@
       "@auth/*": ["src/modules/auth/*"],
       "@prisma/*": ["src/modules/prisma/*"],
       "@crypto/*": ["src/modules/crypto/*"],
-      "@user/*": ["src/modules/user/*"]
+      "@user/*": ["src/modules/user/*"],
+      "@middlewares/*": ["src/middlewares/*"]
     }
   }
 }
