@@ -27,4 +27,11 @@ export class ApiConfigService {
       url: this.getString('DATABASE_URL')
     };
   }
+
+  get basicAuthConfig() {
+    return {
+      username: this.getString(''),
+      password: this.getString('')
+    };
+  }
 }
