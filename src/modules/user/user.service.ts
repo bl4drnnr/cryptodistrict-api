@@ -1,5 +1,5 @@
 import * as bcryptjs from 'bcryptjs';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { AuthService } from '@auth/auth.service';
 import { WrongPasswordException } from '@user/exceptions/wrong-password.exception';
@@ -8,6 +8,7 @@ import { UserAlreadyExistsException } from '@user/exceptions/user-already-exists
 import { TacNotAcceptedException } from '@user/exceptions/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
 import { PhoneService } from '@shared/phone.service';
+import { EmailAlreadyConfirmedException } from '@user/exceptions/email-already-confirmed.exception';
 
 @Injectable()
 export class UserService {
@@ -47,10 +48,32 @@ export class UserService {
       target: registrationDto.email,
       confirmHash
     });
+
+    return { message: 'success' };
   }
 
-  async accountConfirm({ confirmHash }: { confirmHash: string }) {
-    //
+  async accountConfirmation({ confirmHash }: { confirmHash: string }) {
+    const confirmationHash = await this.prisma.confirmationHashes.findFirst({
+      where: { confirmHash },
+      include: { user: true }
+    });
+
+    if (!confirmationHash) throw new BadRequestException();
+    if (confirmationHash.confirmed) throw new EmailAlreadyConfirmedException();
+
+    await this.prisma.confirmationHashes.update({
+      where: { id: confirmationHash.id },
+      data: {
+        confirmed: true,
+        user: {
+          update: {
+            accountConfirm: true
+          }
+        }
+      }
+    });
+
+    return { message: 'success' };
   }
 
   async logout() {
@@ -64,5 +87,9 @@ export class UserService {
     if (!passwordMatch) throw new WrongPasswordException();
 
     return user;
+  }
+
+  async phoneConfirmation({ code }: { code: string }) {
+    // const confirmationPhone = await
   }
 }

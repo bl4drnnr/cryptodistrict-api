@@ -3,6 +3,7 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
+import { PhoneConfirmationDto } from '@user/dto/phoneConfirmation.dto';
 
 @Controller('user')
 export class UserController {
@@ -24,8 +25,13 @@ export class UserController {
     return this.userService.logout();
   }
 
-  @Get('account-confirm/:confirmHash')
-  accountConfirm(@Param('confirmHash') confirmHash: string) {
-    return this.userService.accountConfirm({ confirmHash });
+  @Get('account-confirmation/:confirmHash')
+  accountConfirmation(@Param('confirmHash') confirmHash: string) {
+    return this.userService.accountConfirmation({ confirmHash });
+  }
+
+  @Post('phone-confirmation')
+  phoneConfirmation(@Body() { code }: PhoneConfirmationDto) {
+    return this.userService.phoneConfirmation({ code });
   }
 }
