@@ -8,8 +8,9 @@ export class PhoneService {
   ) {}
 
   async sendSmsCode({ targetPhoneNumber }: { targetPhoneNumber: string }) {
+    const verificationCode = Math.round(Math.random() * 1000000);
     return this.twilioService.client.messages.create({
-      body: 'SMS Body, sent to the phone!',
+      body: `Cryptodistrict verification code: ${verificationCode}.\nWill be valid for 5 minutes.`,
       from: this.configService.twilioPhoneNumber,
       to: targetPhoneNumber
     });

@@ -32,12 +32,25 @@ export class UserService {
 
     const hashedPassword = await bcryptjs.hash(registrationDto.password, 10);
 
-    return await this.prisma.user.create({
+    const createdUser = await this.prisma.user.create({
       data: {
         ...registrationDto,
         password: hashedPassword
       }
     });
+
+    const confirmHash = await bcryptjs.hash('', 10);
+    await this.prisma.confirmationHashes.create({
+      data: { userId: createdUser.id, confirmHash }
+    });
+    await this.emailService.sendConfirmationEmail({
+      target: registrationDto.email,
+      confirmHash
+    });
+  }
+
+  async accountConfirm({ confirmHash }: { confirmHash: string }) {
+    //
   }
 
   async logout() {

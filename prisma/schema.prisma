@@ -9,10 +9,11 @@ datasource db {
 }
 
 model User {
-    id String @id @default(uuid()) @db.Uuid
+    id               String @id @default(uuid()) @db.Uuid
 
     firstName        String? @map("first_name") @db.Citext
     lastName         String? @map("last_name") @db.Citext
+    phoneNumber      String? @map("phone_number") @unique
     email            String  @unique
     password         String
     twitter          String?
@@ -21,9 +22,39 @@ model User {
     title            String?
     bio              String?
     tac              Boolean
+    accountConfirm   Boolean @map("account_confirm") @default(false)
 
-    updated_at DateTime @default(now()) @map("updatedAt") @updatedAt @db.Timestamptz(6)
-    created_at DateTime @default(now()) @map("createdAt") @db.Timestamptz(6)
+    verificationCode VerificationCodes[]
+    confirmHashes    ConfirmationHashes[]
+
+    updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
     @@map("user")
+}
+
+model VerificationCodes {
+    id String @id @default(uuid()) @db.Uuid
+
+    verificationCode    String @map("verification_code")
+    user                User   @relation(fields: [userId], references: [id])
+    userId              String @map("user_id") @db.Uuid
+
+    updated_at DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+    @@map("verificationCodes")
+}
+
+model ConfirmationHashes {
+    id String @id @default(uuid()) @db.Uuid
+
+    confirmHash         String @map("confirm_hash")
+    user                User   @relation(fields: [userId], references: [id])
+    userId              String @map("user_id") @db.Uuid
+
+    updated_at DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+    @@map("confirmationHashes")
 }

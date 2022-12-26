@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UserService } from './user.service';
@@ -22,5 +22,10 @@ export class UserController {
   @Post('logout')
   logout() {
     return this.userService.logout();
+  }
+
+  @Get('account-confirm/:confirmHash')
+  accountConfirm(@Param('confirmHash') confirmHash: string) {
+    return this.userService.accountConfirm({ confirmHash });
   }
 }
