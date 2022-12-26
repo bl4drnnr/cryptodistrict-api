@@ -30,8 +30,8 @@ export class ApiConfigService {
 
   get basicAuthConfig() {
     return {
-      username: this.getString(''),
-      password: this.getString('')
+      username: this.getString('BASIC_AUTH_USERNAME'),
+      password: this.getString('BASIC_AUTH_PASSWORD')
     };
   }
 }
