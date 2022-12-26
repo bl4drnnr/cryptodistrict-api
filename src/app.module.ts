@@ -7,9 +7,10 @@ import {
 import { AuthModule } from '@auth/auth.module';
 import { UserModule } from '@user/user.module';
 import { SharedModule } from '@shared/shared.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
 import { TwilioModule } from 'nestjs-twilio';
+import { ApiConfigService } from '@shared/config.service';
 
 @Module({
   imports: [
@@ -21,12 +22,11 @@ import { TwilioModule } from 'nestjs-twilio';
       envFilePath: `.env.${process.env.NODE_ENV}`
     }),
     TwilioModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (cfg: ConfigService) => ({
-        accountSid: cfg.get('TWILIO_ACCOUNT_SID'),
-        authToken: cfg.get('TWILIO_AUTH_TOKEN')
+      useFactory: (cfg: ApiConfigService) => ({
+        accountSid: cfg.twilioCredentials.twilio_account_sid,
+        authToken: cfg.twilioCredentials.twilio_auth_token
       }),
-      inject: [ConfigService]
+      inject: [ApiConfigService]
     })
   ]
 })

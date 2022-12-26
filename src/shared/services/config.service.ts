@@ -35,7 +35,15 @@ export class ApiConfigService {
     };
   }
 
-  get twilioPhoneNumber() {
-    return this.getString('TWILIO_AUTH_PHONE');
+  get twilioCredentials() {
+    return {
+      twilio_auth_phone: this.getString('TWILIO_AUTH_PHONE'),
+      twilio_account_sid: this.getString('TWILIO_ACCOUNT_SID'),
+      twilio_auth_token: this.getString('TWILIO_AUTH_TOKEN')
+    };
+  }
+
+  get sendGridApiKey() {
+    return this.getString('SENDGRID_API_KEY');
   }
 }
