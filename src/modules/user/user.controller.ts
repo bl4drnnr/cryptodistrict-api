@@ -9,12 +9,12 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UseGuards(AuthGuard('local'))
-  @Post('login')
+  @Post('sign-in')
   login(@Body() payload: LoginDto) {
     return this.userService.login(payload);
   }
 
-  @Post('register')
+  @Post('sign-up')
   register(@Body() payload: RegisterDto) {
     return this.userService.register(payload);
   }

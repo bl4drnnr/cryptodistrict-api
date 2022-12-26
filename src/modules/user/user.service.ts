@@ -2,8 +2,9 @@ import * as bcryptjs from 'bcryptjs';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@prisma/prisma.service';
 import { AuthService } from '@auth/auth.service';
-import { WrongPasswordException } from './exceptions/wrong-password.exception';
+import { WrongPasswordException } from '@user/exceptions/wrong-password.exception';
 import { RegisterDto } from '@user/dto/register.dto';
+import { UserAlreadyExistsException } from '@user/exceptions/user-already-exists.exception';
 
 @Injectable()
 export class UserService {
@@ -17,9 +18,10 @@ export class UserService {
   }
 
   async register(registrationDto: RegisterDto) {
-    await this.prisma.user.findFirstOrThrow({
+    const alreadyExistingUser = await this.prisma.user.findFirst({
       where: { email: registrationDto.email }
     });
+    if (alreadyExistingUser) throw new UserAlreadyExistsException();
 
     const hashedPassword = await bcryptjs.hash(registrationDto.password, 10);
 

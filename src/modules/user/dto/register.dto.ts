@@ -9,11 +9,11 @@ import {
 export class RegisterDto {
   @IsString()
   @IsOptional()
-  firstName: string;
+  firstName?: string;
 
   @IsString()
   @IsOptional()
-  lastName: string;
+  lastName?: string;
 
   @IsEmail()
   @IsString()
@@ -27,21 +27,21 @@ export class RegisterDto {
 
   @IsString()
   @IsOptional()
-  twitter: string;
+  twitter?: string;
 
   @IsString()
   @IsOptional()
-  linkedIn: string;
+  linkedIn?: string;
 
   @IsString()
   @IsOptional()
-  personalWebsite: string;
+  personalWebsite?: string;
 
   @IsString()
   @IsOptional()
-  title: string;
+  title?: string;
 
   @IsString()
   @IsOptional()
-  bio: string;
+  bio?: string;
 }
