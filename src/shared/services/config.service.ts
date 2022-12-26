@@ -34,4 +34,8 @@ export class ApiConfigService {
       password: this.getString('BASIC_AUTH_PASSWORD')
     };
   }
+
+  get twilioPhoneNumber() {
+    return this.getString('TWILIO_AUTH_PHONE');
+  }
 }

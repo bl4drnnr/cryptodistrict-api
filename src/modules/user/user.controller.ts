@@ -1,8 +1,9 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
+import { PhoneConfirmationDto } from '@user/dto/phoneConfirmation.dto';
 
 @Controller('user')
 export class UserController {
@@ -22,5 +23,15 @@ export class UserController {
   @Post('logout')
   logout() {
     return this.userService.logout();
+  }
+
+  @Get('account-confirmation/:confirmHash')
+  accountConfirmation(@Param('confirmHash') confirmHash: string) {
+    return this.userService.accountConfirmation({ confirmHash });
+  }
+
+  @Post('phone-confirmation')
+  phoneConfirmation(@Body() { code }: PhoneConfirmationDto) {
+    return this.userService.phoneConfirmation({ code });
   }
 }

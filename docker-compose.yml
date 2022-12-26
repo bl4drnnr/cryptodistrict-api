@@ -13,7 +13,6 @@ services:
     command: npm run start:dev
     volumes:
       - ./:/usr/src/cryptodistrict_api
-      - /usr/src/cryptodistrict_api/node_modules
     ports:
       - "3000:3000"
     depends_on:

@@ -2,7 +2,7 @@ import type { NestMiddleware } from '@nestjs/common';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import type { NextFunction, Request, Response } from 'express';
 
-import { ApiConfigService } from '@shared/services/config.service';
+import { ApiConfigService } from '@shared/config.service';
 
 @Injectable()
 export class BasicAuthMiddleware implements NestMiddleware {
