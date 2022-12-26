@@ -20,6 +20,7 @@ model User {
     personalWebsite  String? @map("personal_website")
     title            String?
     bio              String?
+    tac              Boolean
 
     updated_at DateTime @default(now()) @map("updatedAt") @updatedAt @db.Timestamptz(6)
     created_at DateTime @default(now()) @map("createdAt") @db.Timestamptz(6)

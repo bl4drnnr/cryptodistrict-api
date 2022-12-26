@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -44,4 +45,7 @@ export class RegisterDto {
   @IsString()
   @IsOptional()
   bio?: string;
+
+  @IsBoolean()
+  tac: boolean;
 }
