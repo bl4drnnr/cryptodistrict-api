@@ -13,7 +13,10 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('sign-in')
-  async signIn(@Res() res: Response, @Body() payload: SignInDto) {
+  async signIn(
+    @Res({ passthrough: true }) res: Response,
+    @Body() payload: SignInDto
+  ) {
     const { _at, _rt } = await this.userService.singIn(payload);
 
     res.cookie('_rt', _rt);
@@ -29,7 +32,10 @@ export class UserController {
   }
 
   @Post('logout')
-  async logout(@UserDecorator() userId: string, @Res() res: Response) {
+  async logout(
+    @UserDecorator({ passthrough: true }) userId: string,
+    @Res() res: Response
+  ) {
     res.clearCookie('_rt');
     await this.userService.logout(userId);
 
