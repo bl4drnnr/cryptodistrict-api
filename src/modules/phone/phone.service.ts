@@ -1,10 +1,12 @@
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '@shared/prisma.service';
 import { TwilioService } from 'nestjs-twilio';
 import { ApiConfigService } from '@shared/config.service';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PhoneService {
   constructor(
+    private readonly prisma: PrismaService,
     private readonly twilioService: TwilioService,
     private readonly configService: ApiConfigService
   ) {}
