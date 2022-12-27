@@ -10,9 +10,9 @@ import { TwilioModule } from 'nestjs-twilio';
   imports: [
     TwilioModule.forRootAsync({
       imports: [ApiConfigService],
-      useFactory: (cfg: ApiConfigService) => ({
-        accountSid: cfg.twilioCredentials.twilio_account_sid,
-        authToken: cfg.twilioCredentials.twilio_auth_token
+      useFactory: (configService: ApiConfigService) => ({
+        accountSid: configService.twilioCredentials.twilio_account_sid,
+        authToken: configService.twilioCredentials.twilio_auth_token
       }),
       inject: [ApiConfigService]
     })
