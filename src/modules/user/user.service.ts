@@ -7,7 +7,6 @@ import { RegisterDto } from '@user/dto/register.dto';
 import { UserAlreadyExistsException } from '@user/exceptions/user-already-exists.exception';
 import { TacNotAcceptedException } from '@user/exceptions/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
-import { PhoneService } from '@shared/phone.service';
 import { EmailAlreadyConfirmedException } from '@user/exceptions/email-already-confirmed.exception';
 
 @Injectable()
@@ -15,8 +14,7 @@ export class UserService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly authService: AuthService,
-    private readonly emailService: EmailService,
-    private readonly phoneService: PhoneService
+    private readonly emailService: EmailService
   ) {}
 
   async login({ email, password }: { email: string; password: string }) {
