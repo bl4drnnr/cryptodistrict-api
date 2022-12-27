@@ -22,6 +22,14 @@ export class ApiConfigService {
     return value.replace(/\\n/g, '\n');
   }
 
+  get nodeEnv() {
+    return this.getString('NODE_ENV');
+  }
+
+  get mongoDbUrl() {
+    return this.getString('MONGO_DB');
+  }
+
   get databaseUrl() {
     return {
       url: this.getString('DATABASE_URL')

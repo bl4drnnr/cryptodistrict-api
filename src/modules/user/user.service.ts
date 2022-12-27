@@ -9,13 +9,15 @@ import { TacNotAcceptedException } from '@user/exceptions/tac-not-accepted.excep
 import { EmailService } from '@shared/email.service';
 import { EmailAlreadyConfirmedException } from '@user/exceptions/email-already-confirmed.exception';
 import { SignInDto } from '@user/dto/sign-in/request.dto';
+import { LoggerService } from '@shared/logger.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly authService: AuthService,
-    private readonly emailService: EmailService
+    private readonly emailService: EmailService,
+    private readonly loggerInstance: LoggerService
   ) {}
 
   async singIn(signInDto: SignInDto) {
