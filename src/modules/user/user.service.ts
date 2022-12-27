@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { AuthService } from '@auth/auth.service';
 import { WrongPasswordException } from '@user/exceptions/wrong-password.exception';
-import { RegisterDto } from '@user/dto/register.dto';
+import { RegisterDto } from '@user/dto/register/request.dto';
 import { UserAlreadyExistsException } from '@user/exceptions/user-already-exists.exception';
 import { TacNotAcceptedException } from '@user/exceptions/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
@@ -85,9 +85,5 @@ export class UserService {
     if (!passwordMatch) throw new WrongPasswordException();
 
     return user;
-  }
-
-  async phoneConfirmation({ code }: { code: string }) {
-    // const confirmationPhone = await
   }
 }

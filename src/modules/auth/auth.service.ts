@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ApiConfigService } from '@shared/config.service';
@@ -8,6 +8,7 @@ import * as uuid from 'uuid';
 import * as jwt from 'jsonwebtoken';
 import { ITokenPayload } from '@auth/interfaces/token-payload.interface';
 import { ITokenError } from '@auth/interfaces/token-error.interface';
+import { CorruptedTokenException } from '@auth/exceptions/corrupted-token.exception';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +45,7 @@ export class AuthService {
 
   private async updateRefreshToken(refreshTokenDto: IRefreshToken) {
     await this.prisma.sessions.delete({
-      where: { id: refreshTokenDto.userId }
+      where: { userId: refreshTokenDto.userId }
     });
     return await this.prisma.sessions.create({
       data: refreshTokenDto
@@ -85,17 +86,15 @@ export class AuthService {
   }
 
   async refreshToken(tokenRefresh: string) {
-    if (!tokenRefresh)
-      throw new UnauthorizedException({ message: 'unauthorized' });
+    if (!tokenRefresh) throw new CorruptedTokenException();
 
     const payload: ITokenPayload | ITokenError = this.verifyToken(tokenRefresh);
 
-    if (!('type' in payload))
-      throw new UnauthorizedException({ message: 'unauthorized' });
+    if (!('type' in payload)) throw new CorruptedTokenException();
 
     const token = await this.getTokenById(payload.id);
 
-    if (!token) throw new UnauthorizedException({ message: 'unauthorized' });
+    if (!token) throw new CorruptedTokenException();
 
     const user = await this.prisma.user.findFirst({
       where: { id: token.userId }
