@@ -46,4 +46,12 @@ export class ApiConfigService {
   get sendGridApiKey() {
     return this.getString('SENDGRID_API_KEY');
   }
+
+  get jwtAuthConfig() {
+    return {
+      accessExpiresIn: this.getString('JWT_ACCESS_EXPIRES_IN'),
+      refreshExpiresIn: this.getString('JWT_REFRESH_EXPIRES_IN'),
+      secret: this.getString('JWT_SECRET')
+    };
+  }
 }

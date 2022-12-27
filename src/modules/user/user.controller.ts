@@ -1,37 +1,49 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import { SignInDto } from './dto/sign-in/request.dto';
+import { SignUpDto } from './dto/sign-up/request.dto';
 import { UserService } from './user.service';
-import { AuthGuard } from '@nestjs/passport';
-import { PhoneConfirmationDto } from '@user/dto/phoneConfirmation.dto';
+import { Response } from 'express';
+import { SignInUserResponse } from '@user/dto/sign-in/response.dto';
+import { SignUpUserResponse } from '@user/dto/sign-up/response.dto';
+import { UserDecorator } from '@decorators/user.decorator';
+import { LogoutResponse } from '@user/dto/logout/response.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(AuthGuard('local'))
   @Post('sign-in')
-  login(@Body() payload: LoginDto) {
-    return this.userService.login(payload);
+  async signIn(
+    @Res({ passthrough: true }) res: Response,
+    @Body() payload: SignInDto
+  ) {
+    const { _at, _rt } = await this.userService.singIn(payload);
+
+    res.cookie('_rt', _rt);
+
+    return new SignInUserResponse(_at);
   }
 
   @Post('sign-up')
-  register(@Body() payload: RegisterDto) {
-    return this.userService.register(payload);
+  async signUp(@Body() payload: SignUpDto) {
+    await this.userService.signUp(payload);
+
+    return new SignUpUserResponse();
   }
 
   @Post('logout')
-  logout() {
-    return this.userService.logout();
+  async logout(
+    @UserDecorator({ passthrough: true }) userId: string,
+    @Res() res: Response
+  ) {
+    res.clearCookie('_rt');
+    await this.userService.logout(userId);
+
+    return new LogoutResponse();
   }
 
   @Get('account-confirmation/:confirmHash')
   accountConfirmation(@Param('confirmHash') confirmHash: string) {
     return this.userService.accountConfirmation({ confirmHash });
-  }
-
-  @Post('phone-confirmation')
-  phoneConfirmation(@Body() { code }: PhoneConfirmationDto) {
-    return this.userService.phoneConfirmation({ code });
   }
 }
