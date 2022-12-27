@@ -2,12 +2,13 @@ import * as bcryptjs from 'bcryptjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { AuthService } from '@auth/auth.service';
-import { WrongPasswordException } from '@user/exceptions/wrong-password.exception';
-import { RegisterDto } from '@user/dto/register/request.dto';
+import { WrongCredentialsException } from '@user/exceptions/wrong-credentials.exception';
+import { SignUpDto } from '@user/dto/sign-up/request.dto';
 import { UserAlreadyExistsException } from '@user/exceptions/user-already-exists.exception';
 import { TacNotAcceptedException } from '@user/exceptions/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
 import { EmailAlreadyConfirmedException } from '@user/exceptions/email-already-confirmed.exception';
+import { SignInDto } from '@user/dto/sign-in/request.dto';
 
 @Injectable()
 export class UserService {
@@ -17,23 +18,37 @@ export class UserService {
     private readonly emailService: EmailService
   ) {}
 
-  async login({ email, password }: { email: string; password: string }) {
-    // return this.authService.generateTokens({ userId: user.id });
+  async singIn(signInDto: SignInDto) {
+    const user = await this.prisma.user.findFirst({
+      where: { email: signInDto.email }
+    });
+    if (!user) throw new WrongCredentialsException();
+
+    const passwordEquality = await bcryptjs.compare(
+      signInDto.password,
+      user.password
+    );
+    if (!passwordEquality) throw new WrongCredentialsException();
+
+    return await this.authService.updateTokens({
+      userId: user.id,
+      email: user.email
+    });
   }
 
-  async register(registrationDto: RegisterDto) {
+  async signUp(signUpDto: SignUpDto) {
     const alreadyExistingUser = await this.prisma.user.findFirst({
-      where: { email: registrationDto.email }
+      where: { email: signUpDto.email }
     });
     if (alreadyExistingUser) throw new UserAlreadyExistsException();
 
-    if (!registrationDto.tac) throw new TacNotAcceptedException();
+    if (!signUpDto.tac) throw new TacNotAcceptedException();
 
-    const hashedPassword = await bcryptjs.hash(registrationDto.password, 10);
+    const hashedPassword = await bcryptjs.hash(signUpDto.password, 10);
 
     const createdUser = await this.prisma.user.create({
       data: {
-        ...registrationDto,
+        ...signUpDto,
         password: hashedPassword
       }
     });
@@ -43,7 +58,7 @@ export class UserService {
       data: { userId: createdUser.id, confirmHash }
     });
     await this.emailService.sendConfirmationEmail({
-      target: registrationDto.email,
+      target: signUpDto.email,
       confirmHash
     });
 
@@ -74,16 +89,7 @@ export class UserService {
     return { message: 'success' };
   }
 
-  async logout() {
-    //
-  }
-
-  async validateUser({ email, password }: { email: string; password: string }) {
-    const user = await this.prisma.user.findFirstOrThrow({ where: { email } });
-    const passwordMatch = await bcryptjs.compare(password, user.password);
-
-    if (!passwordMatch) throw new WrongPasswordException();
-
-    return user;
+  async logout(userId: string) {
+    return await this.authService.deleteRefreshToken(userId);
   }
 }

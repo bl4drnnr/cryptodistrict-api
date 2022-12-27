@@ -1,5 +1,5 @@
 import { AuthService } from '@auth/auth.service';
-import { Controller, Res } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
 import { Cookie } from '@decorators/cookie.decorator';
 import { Response } from 'express';
 import { RefreshTokenResponse } from '@auth/dto/refresh-token/response.dto';
@@ -8,6 +8,7 @@ import { RefreshTokenResponse } from '@auth/dto/refresh-token/response.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Get('/refresh')
   async refreshToken(
     @Cookie('_rt') refreshToken: string,
     @Res() res: Response
