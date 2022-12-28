@@ -44,9 +44,15 @@ export class AuthService {
   }
 
   private async updateRefreshToken(refreshTokenDto: IRefreshToken) {
-    await this.prisma.sessions.delete({
+    const currentSession = await this.prisma.sessions.findFirst({
       where: { userId: refreshTokenDto.userId }
     });
+    if (currentSession) {
+      await this.prisma.sessions.delete({
+        where: { id: currentSession.id }
+      });
+    }
+
     return await this.prisma.sessions.create({
       data: refreshTokenDto
     });
@@ -96,7 +102,7 @@ export class AuthService {
 
     if (!token) throw new CorruptedTokenException();
 
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.users.findFirst({
       where: { id: token.userId }
     });
 

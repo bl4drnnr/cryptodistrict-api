@@ -51,8 +51,11 @@ export class ApiConfigService {
     };
   }
 
-  get sendGridApiKey() {
-    return this.getString('SENDGRID_API_KEY');
+  get sendGridCredentials() {
+    return {
+      api_key: this.getString('SENDGRID_API_KEY'),
+      sender_email: this.getString('SENDGRID_SENDER_EMAIL')
+    };
   }
 
   get jwtAuthConfig() {
@@ -61,5 +64,9 @@ export class ApiConfigService {
       refreshExpiresIn: this.getString('JWT_REFRESH_EXPIRES_IN'),
       secret: this.getString('JWT_SECRET')
     };
+  }
+
+  get frontEndUrl() {
+    return this.getString('FRONT_END_URL');
   }
 }

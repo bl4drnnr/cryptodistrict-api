@@ -8,7 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Users {
     id               String @id @default(uuid()) @db.Uuid
 
     firstName        String? @map("first_name") @db.Citext
@@ -26,24 +26,26 @@ model User {
 
     verificationCode VerificationCodes[]
     confirmHashes    ConfirmationHashes[]
-    sessions         Sessions[]
+    session          Sessions?
+    phone            Phones?
+    twoFa            TwoFa?
 
     updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
     createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
-    @@map("user")
+    @@map("users")
 }
 
 model VerificationCodes {
     id String @id @default(uuid()) @db.Uuid
 
     verificationCode    String  @map("verification_code")
-    user                User    @relation(fields: [userId], references: [id])
+    user                Users    @relation(fields: [userId], references: [id])
     userId              String  @map("user_id") @db.Uuid
     confirmed           Boolean @default(false)
 
-    updated_at DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
-    created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+    updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
     @@map("verificationCodes")
 }
@@ -52,12 +54,12 @@ model ConfirmationHashes {
     id String @id @default(uuid()) @db.Uuid
 
     confirmHash         String @map("confirm_hash")
-    user                User   @relation(fields: [userId], references: [id])
+    user                Users   @relation(fields: [userId], references: [id])
     userId              String @map("user_id") @db.Uuid
     confirmed           Boolean @default(false)
 
-    updated_at DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
-    created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+    updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
     @@map("confirmationHashes")
 }
@@ -65,9 +67,38 @@ model ConfirmationHashes {
 model Sessions {
     id String @id @default(uuid()) @db.Uuid
 
-    tokenId   String @db.Uuid
-    user      User   @relation(fields: [userId], references: [id])
-    userId    String @map("user_id") @unique @db.Uuid
+    tokenId    String @db.Uuid @map("token_id")
+    user       Users   @relation(fields: [userId], references: [id])
+    userId     String @map("user_id") @unique @db.Uuid
+
+    updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
     @@map("sessions")
+}
+
+model Phones {
+    id String @id @default(uuid()) @db.Uuid
+
+    phone      String @unique
+    user       Users   @relation(fields: [userId], references: [id])
+    userId     String @map("user_id") @unique @db.Uuid
+
+    updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+    @@map("phones")
+}
+
+model TwoFa {
+    id String @id @default(uuid()) @db.Uuid
+
+    twoFaToken String @map("two_fa_token")
+    user       Users   @relation(fields: [userId], references: [id])
+    userId     String @map("user_id") @unique @db.Uuid
+
+    updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+    @@map("twofa")
 }

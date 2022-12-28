@@ -1,4 +1,5 @@
 import * as bcryptjs from 'bcryptjs';
+import * as crypto from 'crypto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { AuthService } from '@auth/auth.service';
@@ -10,6 +11,8 @@ import { EmailService } from '@shared/email.service';
 import { EmailAlreadyConfirmedException } from '@user/exceptions/email-already-confirmed.exception';
 import { SignInDto } from '@user/dto/sign-in/request.dto';
 import { LoggerService } from '@shared/logger.service';
+import { ValidatorService } from '@shared/validator.service';
+import { ValidationErrorException } from '@user/exceptions/validation-error.exception';
 
 @Injectable()
 export class UserService {
@@ -17,11 +20,12 @@ export class UserService {
     private readonly prisma: PrismaService,
     private readonly authService: AuthService,
     private readonly emailService: EmailService,
+    private readonly validatorService: ValidatorService,
     private readonly loggerInstance: LoggerService
   ) {}
 
   async singIn(signInDto: SignInDto) {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.users.findFirst({
       where: { email: signInDto.email }
     });
     if (!user) throw new WrongCredentialsException();
@@ -39,23 +43,29 @@ export class UserService {
   }
 
   async signUp(signUpDto: SignUpDto) {
-    const alreadyExistingUser = await this.prisma.user.findFirst({
+    const alreadyExistingUser = await this.prisma.users.findFirst({
       where: { email: signUpDto.email }
     });
     if (alreadyExistingUser) throw new UserAlreadyExistsException();
 
     if (!signUpDto.tac) throw new TacNotAcceptedException();
 
+    if (
+      !this.validatorService.validateEmail(signUpDto.email) ||
+      !this.validatorService.validatePassword(signUpDto.password)
+    )
+      throw new ValidationErrorException();
+
     const hashedPassword = await bcryptjs.hash(signUpDto.password, 10);
 
-    const createdUser = await this.prisma.user.create({
+    const createdUser = await this.prisma.users.create({
       data: {
         ...signUpDto,
         password: hashedPassword
       }
     });
 
-    const confirmHash = await bcryptjs.hash('', 10);
+    const confirmHash = crypto.randomBytes(20).toString('hex');
     await this.prisma.confirmationHashes.create({
       data: { userId: createdUser.id, confirmHash }
     });
