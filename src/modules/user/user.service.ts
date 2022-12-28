@@ -1,4 +1,5 @@
 import * as bcryptjs from 'bcryptjs';
+import * as crypto from 'crypto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { AuthService } from '@auth/auth.service';
@@ -64,7 +65,8 @@ export class UserService {
       }
     });
 
-    const confirmHash = await bcryptjs.hash('', 10);
+    // const confirmHash = await bcryptjs.hash('', 10);
+    const confirmHash = crypto.randomBytes(20).toString('hex');
     await this.prisma.confirmationHashes.create({
       data: { userId: createdUser.id, confirmHash }
     });
