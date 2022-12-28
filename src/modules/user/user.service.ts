@@ -10,6 +10,8 @@ import { EmailService } from '@shared/email.service';
 import { EmailAlreadyConfirmedException } from '@user/exceptions/email-already-confirmed.exception';
 import { SignInDto } from '@user/dto/sign-in/request.dto';
 import { LoggerService } from '@shared/logger.service';
+import { ValidatorService } from '@shared/validator.service';
+import { ValidationErrorException } from '@user/exceptions/validation-error.exception';
 
 @Injectable()
 export class UserService {
@@ -17,6 +19,7 @@ export class UserService {
     private readonly prisma: PrismaService,
     private readonly authService: AuthService,
     private readonly emailService: EmailService,
+    private readonly validatorService: ValidatorService,
     private readonly loggerInstance: LoggerService
   ) {}
 
@@ -45,6 +48,12 @@ export class UserService {
     if (alreadyExistingUser) throw new UserAlreadyExistsException();
 
     if (!signUpDto.tac) throw new TacNotAcceptedException();
+
+    if (
+      !this.validatorService.validateEmail(signUpDto.email) ||
+      !this.validatorService.validatePassword(signUpDto.password)
+    )
+      throw new ValidationErrorException();
 
     const hashedPassword = await bcryptjs.hash(signUpDto.password, 10);
 
