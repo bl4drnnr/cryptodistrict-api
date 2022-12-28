@@ -27,7 +27,7 @@ model User {
     verificationCode VerificationCodes[]
     confirmHashes    ConfirmationHashes[]
     session          Sessions?
-    phone            Phone?
+    phone            Phones?
     twoFa            TwoFa?
 
     updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
