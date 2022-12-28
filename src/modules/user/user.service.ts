@@ -25,7 +25,7 @@ export class UserService {
   ) {}
 
   async singIn(signInDto: SignInDto) {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.users.findFirst({
       where: { email: signInDto.email }
     });
     if (!user) throw new WrongCredentialsException();
@@ -43,7 +43,7 @@ export class UserService {
   }
 
   async signUp(signUpDto: SignUpDto) {
-    const alreadyExistingUser = await this.prisma.user.findFirst({
+    const alreadyExistingUser = await this.prisma.users.findFirst({
       where: { email: signUpDto.email }
     });
     if (alreadyExistingUser) throw new UserAlreadyExistsException();
@@ -58,14 +58,13 @@ export class UserService {
 
     const hashedPassword = await bcryptjs.hash(signUpDto.password, 10);
 
-    const createdUser = await this.prisma.user.create({
+    const createdUser = await this.prisma.users.create({
       data: {
         ...signUpDto,
         password: hashedPassword
       }
     });
 
-    // const confirmHash = await bcryptjs.hash('', 10);
     const confirmHash = crypto.randomBytes(20).toString('hex');
     await this.prisma.confirmationHashes.create({
       data: { userId: createdUser.id, confirmHash }

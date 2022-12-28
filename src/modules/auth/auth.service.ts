@@ -102,7 +102,7 @@ export class AuthService {
 
     if (!token) throw new CorruptedTokenException();
 
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.users.findFirst({
       where: { id: token.userId }
     });
 
