@@ -115,4 +115,8 @@ export class AuthService {
   async deleteRefreshToken(userId: string) {
     return await this.prisma.sessions.delete({ where: { userId } });
   }
+
+  async checkToken() {
+    //
+  }
 }
