@@ -19,7 +19,7 @@ export class EmailService {
     target: string;
     confirmHash: string;
   }) {
-    const confirmationLink = `${this.configService.frontEndUrl}/account-confirmation/${confirmHash}`;
+    const confirmationLink = `${this.configService.frontEndUrl}/account-confirmation?confirmationHash=${confirmHash}`;
 
     const mail = {
       to: target,
@@ -39,7 +39,7 @@ export class EmailService {
 
     this.loggerService
       .loggerInstance()
-      .log('log', `Confirmation email has been sent (${confirmHash})`);
+      .log('info', `Confirmation email has been sent (${confirmHash})`);
 
     return transport;
   }

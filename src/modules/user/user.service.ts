@@ -21,7 +21,7 @@ export class UserService {
     private readonly authService: AuthService,
     private readonly emailService: EmailService,
     private readonly validatorService: ValidatorService,
-    private readonly loggerInstance: LoggerService
+    private readonly loggerService: LoggerService
   ) {}
 
   async singIn(signInDto: SignInDto) {
@@ -65,6 +65,10 @@ export class UserService {
       }
     });
 
+    this.loggerService
+      .loggerInstance()
+      .log('info', `User ${createdUser.email} has been successfully created`);
+
     const confirmHash = crypto.randomBytes(20).toString('hex');
     await this.prisma.confirmationHashes.create({
       data: { userId: createdUser.id, confirmHash }
@@ -83,8 +87,18 @@ export class UserService {
       include: { user: true }
     });
 
-    if (!confirmationHash) throw new BadRequestException();
-    if (confirmationHash.confirmed) throw new EmailAlreadyConfirmedException();
+    if (!confirmationHash) {
+      this.loggerService
+        .loggerInstance()
+        .log('error', `Wrong hash: ${confirmHash}`);
+      throw new BadRequestException();
+    }
+    if (confirmationHash.confirmed) {
+      this.loggerService
+        .loggerInstance()
+        .log('error', `Try to reconfirm hash ${confirmHash}`);
+      throw new EmailAlreadyConfirmedException();
+    }
 
     await this.prisma.confirmationHashes.update({
       where: { id: confirmationHash.id },
@@ -97,6 +111,10 @@ export class UserService {
         }
       }
     });
+
+    this.loggerService
+      .loggerInstance()
+      .log('info', `User account with hash ${confirmHash} has been confirmed.`);
 
     return { message: 'success' };
   }

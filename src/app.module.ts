@@ -9,7 +9,6 @@ import { UserModule } from '@user/user.module';
 import { SharedModule } from '@shared/shared.module';
 import { ConfigModule } from '@nestjs/config';
 import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
-import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -19,8 +18,7 @@ import { DatabaseModule } from './database/database.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`
-    }),
-    DatabaseModule
+    })
   ]
 })
 export class AppModule implements NestModule {
