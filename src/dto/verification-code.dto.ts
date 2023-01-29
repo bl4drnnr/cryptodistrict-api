@@ -1,13 +1,15 @@
-import { TwoFa } from '@prisma/client';
+import { VerificationCodes } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class TwoFaEntity implements TwoFa {
+export class VerificationCodeDto implements VerificationCodes {
   @ApiProperty()
   id: string;
   @ApiProperty()
-  twoFaToken: string;
+  verificationCode: string;
   @ApiProperty()
   userId: string;
+  @ApiProperty()
+  confirmed: boolean;
   @ApiProperty()
   updatedAt: Date;
   @ApiProperty()

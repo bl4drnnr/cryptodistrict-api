@@ -94,8 +94,7 @@ export class AuthService {
   async refreshToken(tokenRefresh: string) {
     if (!tokenRefresh) throw new CorruptedTokenException();
 
-    const payload: ITokenPayload | ITokenError =
-      this.verifyToken(tokenRefresh);
+    const payload: ITokenPayload | ITokenError = this.verifyToken(tokenRefresh);
 
     if (!('type' in payload)) throw new CorruptedTokenException();
 

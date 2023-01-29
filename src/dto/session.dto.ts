@@ -1,7 +1,7 @@
 import { Sessions } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class SessionEntity implements Sessions {
+export class SessionDto implements Sessions {
   @ApiProperty()
   id: string;
   @ApiProperty()
