@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { PhoneService } from './phone.service';
-import { PhoneController } from './phone.controller';
+import { PhoneService } from '@phone/phone.service';
+import { PhoneController } from '@phone/phone.controller';
 import { ApiConfigService } from '@shared/config.service';
 import { TwilioModule } from 'nestjs-twilio';
 

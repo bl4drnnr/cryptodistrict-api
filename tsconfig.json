@@ -22,6 +22,7 @@
       "@auth/*": ["src/modules/auth/*"],
       "@crypto/*": ["src/modules/crypto/*"],
       "@user/*": ["src/modules/user/*"],
+      "@phone/*": ["src/modules/phone/*"],
       "@middlewares/*": ["src/middlewares/*"],
       "@decorators/*": ["src/decorators/*"],
       "@dto/*": ["src/dto/*"],

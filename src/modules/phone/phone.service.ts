@@ -2,6 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { TwilioService } from 'nestjs-twilio';
 import { ApiConfigService } from '@shared/config.service';
+import {
+  VerifyPhoneRequest,
+  PhoneConfirmationRequest,
+  UnbindPhoneRequest
+} from './dto/phone-dtos.export';
 
 @Injectable()
 export class PhoneService {
@@ -11,8 +16,23 @@ export class PhoneService {
     private readonly configService: ApiConfigService
   ) {}
 
+  async unbindMobilePhoneNumber(unbindPhoneRequest: UnbindPhoneRequest) {
+    //
+  }
+
+  async verifyMobilePhoneNumber(verifyPhoneRequest: VerifyPhoneRequest) {
+    //
+  }
+
+  async confirmMobilePhoneNumber(
+    phoneConfirmationRequest: PhoneConfirmationRequest
+  ) {
+    //
+  }
+
   async sendSmsCode({ targetPhoneNumber }: { targetPhoneNumber: string }) {
     const verificationCode = Math.round(Math.random() * 1000000);
+
     return this.twilioService.client.messages.create({
       body: `Cryptodistrict verification code: ${verificationCode}.\nWill be valid for 5 minutes.`,
       from: this.configService.twilioCredentials.twilio_auth_phone,
