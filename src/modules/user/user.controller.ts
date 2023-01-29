@@ -1,16 +1,18 @@
 import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
-import { SignInRequest } from './dto/sign-in/request.dto';
-import { SignUpRequest } from './dto/sign-up/request.dto';
 import { UserService } from './user.service';
 import { Response } from 'express';
-import { SignInResponse } from '@user/dto/sign-in/response.dto';
-import { SignUpResponse } from '@user/dto/sign-up/response.dto';
 import { UserDecorator } from '@decorators/user.decorator';
-import { LogoutResponse } from '@user/dto/logout/response.dto';
 import { ApiCreatedResponse, ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { ConfirmHashDto } from '@dto/confirm-hash.dto';
 import { TwoFaDto } from '@dto/twofa.dto';
 import { UserDto } from '@dto/user.dto';
+import {
+  LogoutResponse,
+  SignInRequest,
+  SignInResponse,
+  SignUpRequest,
+  SignUpResponse
+} from './dto/user-dtos.export';
 
 @ApiTags('Users')
 @Controller('user')
