@@ -25,7 +25,8 @@
       "@middlewares/*": ["src/middlewares/*"],
       "@decorators/*": ["src/decorators/*"],
       "@dto/*": ["src/dto/*"],
-      "@interfaces/*": ["src/interfaces/*"]
+      "@interfaces/*": ["src/interfaces/*"],
+      "@docs/*": ["./docs/*"]
     }
   }
 }
