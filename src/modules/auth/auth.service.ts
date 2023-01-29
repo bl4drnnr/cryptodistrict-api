@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ApiConfigService } from '@shared/config.service';
-import { IAccessToken } from '@auth/interfaces/access-token.interface';
-import { IRefreshToken } from '@auth/interfaces/refresh-token.interface';
+import { AccessTokenEntity } from '../../dto/access-token.dto';
+import { RefreshTokenEntity } from '../../dto/refresh-token.entity';
 import * as uuid from 'uuid';
 import * as jwt from 'jsonwebtoken';
-import { ITokenPayload } from '@auth/interfaces/token-payload.interface';
-import { ITokenError } from '@auth/interfaces/token-error.interface';
+import { TokenPayloadEntity } from '../../dto/token-payload.entity';
+import { TokenErrorEntity } from '../../dto/token-error.entity';
 import { CorruptedTokenException } from '@auth/exceptions/corrupted-token.exception';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class AuthService {
     private readonly configService: ApiConfigService
   ) {}
 
-  private generateAccessToken(accessTokenDto: IAccessToken) {
+  private generateAccessToken(accessTokenDto: AccessTokenEntity) {
     const payload = {
       userId: accessTokenDto.userId,
       email: accessTokenDto.email,
@@ -43,7 +43,7 @@ export class AuthService {
     return { id, token: this.jwtService.sign(payload, options) };
   }
 
-  private async updateRefreshToken(refreshTokenDto: IRefreshToken) {
+  private async updateRefreshToken(refreshTokenDto: RefreshTokenEntity) {
     const currentSession = await this.prisma.sessions.findFirst({
       where: { userId: refreshTokenDto.userId }
     });
@@ -58,7 +58,7 @@ export class AuthService {
     });
   }
 
-  private verifyToken<T extends ITokenPayload, R extends ITokenError>(
+  private verifyToken<T extends TokenPayloadEntity, R extends TokenErrorEntity>(
     token: string
   ): T | R {
     try {
@@ -79,7 +79,7 @@ export class AuthService {
     });
   }
 
-  async updateTokens(accessTokenDto: IAccessToken) {
+  async updateTokens(accessTokenDto: AccessTokenEntity) {
     const accessToken = this.generateAccessToken(accessTokenDto);
     const refreshToken = this.generateRefreshToken();
 
@@ -94,7 +94,8 @@ export class AuthService {
   async refreshToken(tokenRefresh: string) {
     if (!tokenRefresh) throw new CorruptedTokenException();
 
-    const payload: ITokenPayload | ITokenError = this.verifyToken(tokenRefresh);
+    const payload: TokenPayloadEntity | TokenErrorEntity =
+      this.verifyToken(tokenRefresh);
 
     if (!('type' in payload)) throw new CorruptedTokenException();
 

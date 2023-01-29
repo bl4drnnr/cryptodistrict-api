@@ -1,8 +1,9 @@
 import { AuthService } from '@auth/auth.service';
-import { Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Cookie } from '@decorators/cookie.decorator';
 import { Response } from 'express';
 import { RefreshTokenResponse } from '@auth/dto/refresh-token/response.dto';
+import { CheckTokenDto } from '@auth/dto/check-token/request.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +24,8 @@ export class AuthController {
   @Post('/check')
   async checkToken(
     @Cookie('_rt') refreshToken: string,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
+    @Body() test: CheckTokenDto
   ) {
     //
   }

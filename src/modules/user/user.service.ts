@@ -13,7 +13,7 @@ import { SignInDto } from '@user/dto/sign-in/request.dto';
 import { LoggerService } from '@shared/logger.service';
 import { ValidatorService } from '@shared/validator.service';
 import { ValidationErrorException } from '@user/exceptions/validation-error.exception';
-import { AccountNotConfirmedException } from "@user/exceptions/account-not-confirmed.exception";
+import { AccountNotConfirmedException } from '@user/exceptions/account-not-confirmed.exception';
 
 @Injectable()
 export class UserService {
