@@ -7,7 +7,9 @@ import { SignInResponse } from '@user/dto/sign-in/response.dto';
 import { SignUpResponse } from '@user/dto/sign-up/response.dto';
 import { UserDecorator } from '@decorators/user.decorator';
 import { LogoutResponse } from '@user/dto/logout/response.dto';
+import { ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Users')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -42,6 +44,7 @@ export class UserController {
     return new LogoutResponse();
   }
 
+  @ApiCreatedResponse({ type: SignUpResponse })
   @Get('account-confirmation/:confirmHash')
   accountConfirmation(@Param('confirmHash') confirmHash: string) {
     return this.userService.accountConfirmation({ confirmHash });

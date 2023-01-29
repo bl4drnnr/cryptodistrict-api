@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ApiConfigService } from '@shared/config.service';
-import { AccessTokenEntity } from '../../dto/access-token.dto';
-import { RefreshTokenEntity } from '../../dto/refresh-token.entity';
+import { IAccessToken } from '@interfaces/access-token.interface';
+import { IRefreshToken } from '@interfaces/refresh-token.interface';
 import * as uuid from 'uuid';
 import * as jwt from 'jsonwebtoken';
-import { TokenPayloadEntity } from '../../dto/token-payload.entity';
-import { TokenErrorEntity } from '../../dto/token-error.entity';
+import { ITokenPayload } from '@interfaces/token-payload.interface';
+import { ITokenError } from '@interfaces/token-error.interface';
 import { CorruptedTokenException } from '@auth/exceptions/corrupted-token.exception';
 
 @Injectable()
@@ -18,10 +18,10 @@ export class AuthService {
     private readonly configService: ApiConfigService
   ) {}
 
-  private generateAccessToken(accessTokenDto: AccessTokenEntity) {
+  private generateAccessToken(IAccessToken: IAccessToken) {
     const payload = {
-      userId: accessTokenDto.userId,
-      email: accessTokenDto.email,
+      userId: IAccessToken.userId,
+      email: IAccessToken.email,
       type: 'access'
     };
     const options = {
@@ -43,9 +43,9 @@ export class AuthService {
     return { id, token: this.jwtService.sign(payload, options) };
   }
 
-  private async updateRefreshToken(refreshTokenDto: RefreshTokenEntity) {
+  private async updateRefreshToken(IRefreshToken: IRefreshToken) {
     const currentSession = await this.prisma.sessions.findFirst({
-      where: { userId: refreshTokenDto.userId }
+      where: { userId: IRefreshToken.userId }
     });
     if (currentSession) {
       await this.prisma.sessions.delete({
@@ -54,11 +54,11 @@ export class AuthService {
     }
 
     return await this.prisma.sessions.create({
-      data: refreshTokenDto
+      data: IRefreshToken
     });
   }
 
-  private verifyToken<T extends TokenPayloadEntity, R extends TokenErrorEntity>(
+  private verifyToken<T extends ITokenPayload, R extends ITokenError>(
     token: string
   ): T | R {
     try {
@@ -79,12 +79,12 @@ export class AuthService {
     });
   }
 
-  async updateTokens(accessTokenDto: AccessTokenEntity) {
-    const accessToken = this.generateAccessToken(accessTokenDto);
+  async updateTokens(IAccessToken: IAccessToken) {
+    const accessToken = this.generateAccessToken(IAccessToken);
     const refreshToken = this.generateRefreshToken();
 
     await this.updateRefreshToken({
-      userId: accessTokenDto.userId,
+      userId: IAccessToken.userId,
       tokenId: refreshToken.id
     });
 
@@ -94,7 +94,7 @@ export class AuthService {
   async refreshToken(tokenRefresh: string) {
     if (!tokenRefresh) throw new CorruptedTokenException();
 
-    const payload: TokenPayloadEntity | TokenErrorEntity =
+    const payload: ITokenPayload | ITokenError =
       this.verifyToken(tokenRefresh);
 
     if (!('type' in payload)) throw new CorruptedTokenException();

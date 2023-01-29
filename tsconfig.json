@@ -23,7 +23,9 @@
       "@crypto/*": ["src/modules/crypto/*"],
       "@user/*": ["src/modules/user/*"],
       "@middlewares/*": ["src/middlewares/*"],
-      "@decorators/*": ["src/decorators/*"]
+      "@decorators/*": ["src/decorators/*"],
+      "@dto/*": ["src/dto/*"],
+      "@interfaces/*": ["src/interfaces/*"]
     }
   }
 }

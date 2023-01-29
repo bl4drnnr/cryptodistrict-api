@@ -1,7 +1,7 @@
 import { Phones } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PhoneEntity implements Phones {
+export class PhoneDto implements Phones {
   @ApiProperty()
   id: string;
   @ApiProperty()
