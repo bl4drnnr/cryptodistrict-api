@@ -7,7 +7,7 @@ import {
   Length
 } from 'class-validator';
 
-export class SignUpDto {
+export class SignUpRequest {
   @IsString()
   @IsOptional()
   firstName?: string;

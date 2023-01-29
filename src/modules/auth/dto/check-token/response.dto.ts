@@ -1,1 +1,1 @@
-
+export class CheckTokenResponse {}

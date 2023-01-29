@@ -1,3 +1,7 @@
 export class LogoutResponse {
-  constructor(private readonly message: string = 'success') {}
+  constructor(message = 'success') {
+    this.message = message;
+  }
+
+  private readonly message: string;
 }

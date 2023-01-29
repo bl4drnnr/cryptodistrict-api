@@ -1,3 +1,6 @@
-export class SignUpUserResponse {
-  constructor(private readonly message: string = 'success') {}
+export class SignUpResponse {
+  constructor(message = 'success') {
+    this.message = message;
+  }
+  private readonly message: string;
 }

@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ApiConfigService } from '@shared/config.service';
-import { IAccessToken } from '@auth/interfaces/access-token.interface';
-import { IRefreshToken } from '@auth/interfaces/refresh-token.interface';
+import { IAccessToken } from '@interfaces/access-token.interface';
+import { IRefreshToken } from '@interfaces/refresh-token.interface';
 import * as uuid from 'uuid';
 import * as jwt from 'jsonwebtoken';
-import { ITokenPayload } from '@auth/interfaces/token-payload.interface';
-import { ITokenError } from '@auth/interfaces/token-error.interface';
+import { ITokenPayload } from '@interfaces/token-payload.interface';
+import { ITokenError } from '@interfaces/token-error.interface';
 import { CorruptedTokenException } from '@auth/exceptions/corrupted-token.exception';
 
 @Injectable()
@@ -18,10 +18,10 @@ export class AuthService {
     private readonly configService: ApiConfigService
   ) {}
 
-  private generateAccessToken(accessTokenDto: IAccessToken) {
+  private generateAccessToken(IAccessToken: IAccessToken) {
     const payload = {
-      userId: accessTokenDto.userId,
-      email: accessTokenDto.email,
+      userId: IAccessToken.userId,
+      email: IAccessToken.email,
       type: 'access'
     };
     const options = {
@@ -43,9 +43,9 @@ export class AuthService {
     return { id, token: this.jwtService.sign(payload, options) };
   }
 
-  private async updateRefreshToken(refreshTokenDto: IRefreshToken) {
+  private async updateRefreshToken(IRefreshToken: IRefreshToken) {
     const currentSession = await this.prisma.sessions.findFirst({
-      where: { userId: refreshTokenDto.userId }
+      where: { userId: IRefreshToken.userId }
     });
     if (currentSession) {
       await this.prisma.sessions.delete({
@@ -54,7 +54,7 @@ export class AuthService {
     }
 
     return await this.prisma.sessions.create({
-      data: refreshTokenDto
+      data: IRefreshToken
     });
   }
 
@@ -79,12 +79,12 @@ export class AuthService {
     });
   }
 
-  async updateTokens(accessTokenDto: IAccessToken) {
-    const accessToken = this.generateAccessToken(accessTokenDto);
+  async updateTokens(IAccessToken: IAccessToken) {
+    const accessToken = this.generateAccessToken(IAccessToken);
     const refreshToken = this.generateRefreshToken();
 
     await this.updateRefreshToken({
-      userId: accessTokenDto.userId,
+      userId: IAccessToken.userId,
       tokenId: refreshToken.id
     });
 
