@@ -9,7 +9,6 @@ import { TwilioModule } from 'nestjs-twilio';
   controllers: [PhoneController],
   imports: [
     TwilioModule.forRootAsync({
-      imports: [ApiConfigService],
       useFactory: (configService: ApiConfigService) => ({
         accountSid: configService.twilioCredentials.twilio_account_sid,
         authToken: configService.twilioCredentials.twilio_auth_token

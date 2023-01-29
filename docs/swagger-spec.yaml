@@ -100,13 +100,82 @@ paths:
       responses:
         "200":
           description: ""
+      tags: *a2
+  /api/user/get-settings:
+    get:
+      operationId: UserController_getSettings
+      summary: ""
+      description: ""
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSettingsResponse"
+      tags: *a2
+  /api/phone/unbind:
+    post:
+      operationId: PhoneController_unbindPhone
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnbindPhoneRequest"
+      responses:
         "201":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SignUpResponse"
-      tags: *a2
+                $ref: "#/components/schemas/UnbindPhoneResponse"
+      tags: &a3
+        - Phone
+  /api/phone/confirm:
+    post:
+      operationId: PhoneController_confirmPhone
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PhoneConfirmationRequest"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PhoneConfirmationResponse"
+      tags: *a3
+  /api/phone/verify:
+    post:
+      operationId: PhoneController_verifyPhone
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyPhoneRequest"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerifyPhoneResponse"
+      tags: *a3
 info:
   title: Cryptodiscrict API
   description: Cryptodiscrict API documentation
@@ -308,3 +377,91 @@ components:
         - confirmed
         - updatedAt
         - createdAt
+    GetSettingsResponse:
+      type: object
+      properties:
+        settings:
+          type: object
+      required:
+        - settings
+    UnbindPhoneRequest:
+      type: object
+      properties: {}
+    UnbindPhoneResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    PhoneDto:
+      type: object
+      properties:
+        id:
+          type: string
+        phone:
+          type: string
+        userId:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - phone
+        - userId
+        - updatedAt
+        - createdAt
+    VerificationCodeDto:
+      type: object
+      properties:
+        id:
+          type: string
+        verificationCode:
+          type: string
+        userId:
+          type: string
+        confirmed:
+          type: boolean
+        updatedAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - verificationCode
+        - userId
+        - confirmed
+        - updatedAt
+        - createdAt
+    PhoneConfirmationRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 6
+          maxLength: 6
+      required:
+        - code
+    PhoneConfirmationResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    VerifyPhoneRequest:
+      type: object
+      properties: {}
+    VerifyPhoneResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message

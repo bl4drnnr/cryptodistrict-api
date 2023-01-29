@@ -8,7 +8,7 @@ import * as uuid from 'uuid';
 import * as jwt from 'jsonwebtoken';
 import { ITokenPayload } from '@interfaces/token-payload.interface';
 import { ITokenError } from '@interfaces/token-error.interface';
-import { CorruptedTokenException } from '@auth/exceptions/corrupted-token.exception';
+import { CorruptedTokenException } from './exceptions/auth-exceptions.export';
 
 @Injectable()
 export class AuthService {

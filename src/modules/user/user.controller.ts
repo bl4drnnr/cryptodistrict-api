@@ -1,8 +1,16 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Res,
+  Headers
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
 import { UserDecorator } from '@decorators/user.decorator';
-import { ApiCreatedResponse, ApiExtraModels, ApiTags } from '@nestjs/swagger';
+import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { ConfirmHashDto } from '@dto/confirm-hash.dto';
 import { TwoFaDto } from '@dto/twofa.dto';
 import { UserDto } from '@dto/user.dto';
@@ -11,7 +19,9 @@ import {
   SignInRequest,
   SignInResponse,
   SignUpRequest,
-  SignUpResponse
+  SignUpResponse,
+  GetSettingsRequest,
+  GetSettingsResponse
 } from './dto/user-dtos.export';
 
 @ApiTags('Users')
@@ -52,9 +62,15 @@ export class UserController {
   }
 
   @ApiExtraModels(ConfirmHashDto)
-  @ApiCreatedResponse({ type: SignUpResponse })
   @Get('account-confirmation/:confirmHash')
   accountConfirmation(@Param('confirmHash') confirmHash: string) {
     return this.userService.accountConfirmation({ confirmHash });
+  }
+
+  @Get('get-settings')
+  async getSettings(@Headers() payload: GetSettingsRequest) {
+    const userSettings = await this.userService.getSettings(payload);
+
+    return new GetSettingsResponse({ test: 'asd' });
   }
 }
