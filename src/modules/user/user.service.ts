@@ -4,12 +4,12 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { AuthService } from '@auth/auth.service';
 import { WrongCredentialsException } from '@user/exceptions/wrong-credentials.exception';
-import { SignUpDto } from '@user/dto/sign-up/request.dto';
+import { SignUpRequest } from '@user/dto/sign-up/request.dto';
 import { UserAlreadyExistsException } from '@user/exceptions/user-already-exists.exception';
 import { TacNotAcceptedException } from '@user/exceptions/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
 import { EmailAlreadyConfirmedException } from '@user/exceptions/email-already-confirmed.exception';
-import { SignInDto } from '@user/dto/sign-in/request.dto';
+import { SignInRequest } from '@user/dto/sign-in/request.dto';
 import { LoggerService } from '@shared/logger.service';
 import { ValidatorService } from '@shared/validator.service';
 import { ValidationErrorException } from '@user/exceptions/validation-error.exception';
@@ -25,15 +25,15 @@ export class UserService {
     private readonly loggerService: LoggerService
   ) {}
 
-  async singIn(signInDto: SignInDto) {
+  async singIn(SignInRequest: SignInRequest) {
     const user = await this.prisma.users.findFirst({
-      where: { email: signInDto.email }
+      where: { email: SignInRequest.email }
     });
     if (!user) throw new WrongCredentialsException();
     if (!user.accountConfirm) throw new AccountNotConfirmedException();
 
     const passwordEquality = await bcryptjs.compare(
-      signInDto.password,
+      SignInRequest.password,
       user.password
     );
     if (!passwordEquality) throw new WrongCredentialsException();
@@ -44,25 +44,25 @@ export class UserService {
     });
   }
 
-  async signUp(signUpDto: SignUpDto) {
+  async signUp(SignUpRequest: SignUpRequest) {
     const alreadyExistingUser = await this.prisma.users.findFirst({
-      where: { email: signUpDto.email }
+      where: { email: SignUpRequest.email }
     });
     if (alreadyExistingUser) throw new UserAlreadyExistsException();
 
-    if (!signUpDto.tac) throw new TacNotAcceptedException();
+    if (!SignUpRequest.tac) throw new TacNotAcceptedException();
 
     if (
-      !this.validatorService.validateEmail(signUpDto.email) ||
-      !this.validatorService.validatePassword(signUpDto.password)
+      !this.validatorService.validateEmail(SignUpRequest.email) ||
+      !this.validatorService.validatePassword(SignUpRequest.password)
     )
       throw new ValidationErrorException();
 
-    const hashedPassword = await bcryptjs.hash(signUpDto.password, 10);
+    const hashedPassword = await bcryptjs.hash(SignUpRequest.password, 10);
 
     const createdUser = await this.prisma.users.create({
       data: {
-        ...signUpDto,
+        ...SignUpRequest,
         password: hashedPassword
       }
     });
@@ -76,7 +76,7 @@ export class UserService {
       data: { userId: createdUser.id, confirmHash }
     });
     await this.emailService.sendConfirmationEmail({
-      target: signUpDto.email,
+      target: SignUpRequest.email,
       confirmHash
     });
 

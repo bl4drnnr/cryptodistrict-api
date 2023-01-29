@@ -1,6 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-
-export class CheckTokenDto {
-  @ApiProperty()
-  test: string;
+export class CheckTokenRequest {
+  token: string;
 }
