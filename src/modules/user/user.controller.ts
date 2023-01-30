@@ -71,6 +71,6 @@ export class UserController {
   async getSettings(@Headers() payload: GetSettingsRequest) {
     const userSettings = await this.userService.getSettings(payload);
 
-    return new GetSettingsResponse({ test: 'asd' });
+    return new GetSettingsResponse(userSettings);
   }
 }

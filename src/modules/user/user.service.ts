@@ -131,6 +131,10 @@ export class UserService {
   }
 
   async getSettings(payload: GetSettingsRequest) {
-    //
+    return {
+      firstName: '',
+      lastName: '',
+      bio: ''
+    };
   }
 }
