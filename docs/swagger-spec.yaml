@@ -295,6 +295,13 @@ components:
         createdAt:
           format: date-time
           type: string
+        emailChanged:
+          type: boolean
+        lastPassChange:
+          format: date-time
+          type: string
+        twoFaType:
+          type: object
       required:
         - id
         - firstName
@@ -311,6 +318,9 @@ components:
         - accountConfirm
         - updatedAt
         - createdAt
+        - emailChanged
+        - lastPassChange
+        - twoFaType
     SignUpRequest:
       type: object
       properties:

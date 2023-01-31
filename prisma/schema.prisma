@@ -23,6 +23,9 @@ model Users {
     bio              String?
     tac              Boolean
     accountConfirm   Boolean @map("account_confirm") @default(false)
+    emailChanged     Boolean @map("email_changed") @default(false)
+    lastPassChange   DateTime? @map("last_pass_change")
+    twoFaType        TwoFaType?
 
     verificationCode VerificationCodes[]
     confirmHashes    ConfirmationHashes[]
@@ -101,4 +104,9 @@ model TwoFa {
     createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
     @@map("twofa")
+}
+
+enum TwoFaType {
+    PHONE
+    TOTP
 }

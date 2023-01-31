@@ -1,4 +1,4 @@
-import { Users } from '@prisma/client';
+import { TwoFaType, Users } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserDto implements Users {
@@ -32,4 +32,10 @@ export class UserDto implements Users {
   updatedAt: Date;
   @ApiProperty()
   createdAt: Date;
+  @ApiProperty()
+  emailChanged: boolean;
+  @ApiProperty()
+  lastPassChange: Date;
+  @ApiProperty()
+  twoFaType: TwoFaType;
 }

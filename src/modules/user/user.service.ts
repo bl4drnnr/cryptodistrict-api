@@ -6,11 +6,7 @@ import { AuthService } from '@auth/auth.service';
 import { EmailService } from '@shared/email.service';
 import { LoggerService } from '@shared/logger.service';
 import { ValidatorService } from '@shared/validator.service';
-import {
-  SignInRequest,
-  SignUpRequest,
-  GetSettingsRequest
-} from './dto/user-dtos.export';
+import { SignInRequest, SignUpRequest } from './dto/user-dtos.export';
 import {
   WrongCredentialsException,
   AccountNotConfirmedException,
@@ -130,11 +126,20 @@ export class UserService {
     return await this.authService.deleteRefreshToken(userId);
   }
 
-  async getSettings(payload: GetSettingsRequest) {
-    return {
-      firstName: '',
-      lastName: '',
-      bio: ''
-    };
+  async getSettings(user: any) {
+    return await this.prisma.users.findFirst({
+      where: { id: user.userId },
+      select: {
+        firstName: true,
+        lastName: true,
+        phoneNumber: true,
+        email: true,
+        twitter: true,
+        linkedIn: true,
+        personalWebsite: true,
+        title: true,
+        bio: true
+      }
+    });
   }
 }

@@ -5,7 +5,6 @@ import {
   Param,
   Post,
   Res,
-  Headers,
   UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -21,7 +20,6 @@ import {
   SignInResponse,
   SignUpRequest,
   SignUpResponse,
-  GetSettingsRequest,
   GetSettingsResponse
 } from './dto/user-dtos.export';
 import { JwtGuard } from '@guards/jwt.guard';
