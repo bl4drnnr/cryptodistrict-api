@@ -302,6 +302,8 @@ components:
           type: string
         twoFaType:
           type: object
+        receiveNotifications:
+          type: boolean
       required:
         - id
         - firstName
@@ -321,6 +323,7 @@ components:
         - emailChanged
         - lastPassChange
         - twoFaType
+        - receiveNotifications
     SignUpRequest:
       type: object
       properties:

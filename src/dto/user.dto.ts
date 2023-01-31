@@ -38,4 +38,6 @@ export class UserDto implements Users {
   lastPassChange: Date;
   @ApiProperty()
   twoFaType: TwoFaType;
+  @ApiProperty()
+  receiveNotifications: boolean;
 }

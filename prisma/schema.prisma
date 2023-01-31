@@ -11,30 +11,31 @@ datasource db {
 model Users {
     id               String @id @default(uuid()) @db.Uuid
 
-    firstName        String? @map("first_name") @db.Citext
-    lastName         String? @map("last_name") @db.Citext
-    phoneNumber      String? @map("phone_number") @unique
-    email            String  @unique
-    password         String
-    twitter          String?
-    linkedIn         String? @map("linked_in")
-    personalWebsite  String? @map("personal_website")
-    title            String?
-    bio              String?
-    tac              Boolean
-    accountConfirm   Boolean @map("account_confirm") @default(false)
-    emailChanged     Boolean @map("email_changed") @default(false)
-    lastPassChange   DateTime? @map("last_pass_change")
-    twoFaType        TwoFaType?
+    firstName            String?    @map("first_name") @db.Citext
+    lastName             String?    @map("last_name") @db.Citext
+    phoneNumber          String?    @map("phone_number") @unique
+    email                String     @unique
+    password             String
+    twitter              String?
+    linkedIn             String?    @map("linked_in")
+    personalWebsite      String?    @map("personal_website")
+    title                String?
+    bio                  String?
+    tac                  Boolean
+    accountConfirm       Boolean    @map("account_confirm") @default(false)
+    emailChanged         Boolean    @map("email_changed") @default(false)
+    lastPassChange       DateTime?  @map("last_pass_change")
+    twoFaType            TwoFaType? @map("two_fa_type")
+    receiveNotifications Boolean    @map("receive_notifications") @default(false)
 
-    verificationCode VerificationCodes[]
-    confirmHashes    ConfirmationHashes[]
-    session          Sessions?
-    phone            Phones?
-    twoFa            TwoFa?
+    verificationCode     VerificationCodes[]
+    confirmHashes        ConfirmationHashes[]
+    session              Sessions?
+    phone                Phones?
+    twoFa                TwoFa?
 
-    updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
-    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+    updatedAt            DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
     @@map("users")
 }

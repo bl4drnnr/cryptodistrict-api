@@ -127,7 +127,7 @@ export class UserService {
   }
 
   async getSettings(user: any) {
-    return await this.prisma.users.findFirst({
+    const userSettings = await this.prisma.users.findFirst({
       where: { id: user.userId },
       select: {
         firstName: true,
@@ -138,8 +138,34 @@ export class UserService {
         linkedIn: true,
         personalWebsite: true,
         title: true,
-        bio: true
+        bio: true,
+        emailChanged: true,
+        lastPassChange: true,
+        twoFaType: true,
+        receiveNotifications: true
       }
     });
+
+    return {
+      personalInformation: {
+        firstName: userSettings.firstName,
+        lastName: userSettings.lastName,
+        phoneNumber: userSettings.phoneNumber,
+        email: userSettings.email,
+        twitter: userSettings.title,
+        linkedIn: userSettings.linkedIn,
+        personalWebsite: userSettings.personalWebsite,
+        title: userSettings.title,
+        bio: userSettings.bio
+      },
+      notificationSettings: {
+        receiveNotifications: userSettings.receiveNotifications
+      },
+      securitySettings: {
+        emailChanged: userSettings.emailChanged,
+        lastPassChange: userSettings.lastPassChange,
+        twoFaType: userSettings.twoFaType
+      }
+    };
   }
 }

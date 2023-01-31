@@ -1,4 +1,4 @@
-interface ISettings {
+interface IPersonalInformation {
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -8,6 +8,22 @@ interface ISettings {
   personalWebsite: string;
   title: string;
   bio: string;
+}
+
+interface INotificationSettings {
+  receiveNotifications: boolean;
+}
+
+interface ISecuritySettings {
+  emailChanged: boolean;
+  lastPassChange: Date;
+  twoFaType: string;
+}
+
+interface ISettings {
+  personalInformation: IPersonalInformation;
+  notificationSettings: INotificationSettings;
+  securitySettings: ISecuritySettings;
 }
 
 export class GetSettingsResponse {
