@@ -96,7 +96,7 @@ export class AuthService {
 
     const payload: ITokenPayload | ITokenError = this.verifyToken(tokenRefresh);
 
-    if (!('type' in payload)) throw new CorruptedTokenException();
+    if (!payload || !('type' in payload)) throw new CorruptedTokenException();
 
     const token = await this.getTokenById(payload.id);
 

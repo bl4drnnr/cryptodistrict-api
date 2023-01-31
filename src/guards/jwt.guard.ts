@@ -38,7 +38,7 @@ export class JwtGuard implements CanActivate {
     const payload: ITokenPayload | ITokenError =
       this.authService.verifyToken(token);
 
-    if (!('type' in payload))
+    if (!payload || !('type' in payload))
       throw new UnauthorizedException({ message: 'unauthorized' });
 
     req.user = payload.userId;

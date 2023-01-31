@@ -25,6 +25,7 @@ import {
   GetSettingsResponse
 } from './dto/user-dtos.export';
 import { JwtGuard } from '@guards/jwt.guard';
+import { FastifyReply } from 'fastify';
 
 @ApiTags('Users')
 @Controller('user')
@@ -34,7 +35,7 @@ export class UserController {
   @ApiExtraModels(TwoFaDto)
   @Post('sign-in')
   async signIn(
-    @Res({ passthrough: true }) res: Response,
+    @Res({ passthrough: true }) res: FastifyReply,
     @Body() payload: SignInRequest
   ) {
     const { _at, _rt } = await this.userService.singIn(payload);
