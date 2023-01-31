@@ -1,9 +1,10 @@
 import { AuthService } from '@auth/auth.service';
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { Cookie } from '@decorators/cookie.decorator';
 import { Response } from 'express';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { SessionDto } from '@dto/session.dto';
+import { FastifyReply } from 'fastify';
 import {
   RefreshTokenResponse,
   CheckTokenRequest
@@ -15,10 +16,10 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiExtraModels(SessionDto)
-  @Post('/refresh')
+  @Get('/refresh')
   async refreshToken(
-    @Cookie('_rt') refreshToken: string,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: FastifyReply,
+    @Cookie('_rt') refreshToken: string
   ) {
     const { _rt, _at } = await this.authService.refreshToken(refreshToken);
 

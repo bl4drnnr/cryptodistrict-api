@@ -1,13 +1,13 @@
 openapi: 3.0.0
 paths:
   /api/auth/refresh:
-    post:
+    get:
       operationId: AuthController_refreshToken
       summary: ""
       description: ""
       parameters: []
       responses:
-        "201":
+        "200":
           description: ""
           content:
             application/json:
@@ -295,6 +295,15 @@ components:
         createdAt:
           format: date-time
           type: string
+        emailChanged:
+          type: boolean
+        lastPassChange:
+          format: date-time
+          type: string
+        twoFaType:
+          type: object
+        receiveNotifications:
+          type: boolean
       required:
         - id
         - firstName
@@ -311,6 +320,10 @@ components:
         - accountConfirm
         - updatedAt
         - createdAt
+        - emailChanged
+        - lastPassChange
+        - twoFaType
+        - receiveNotifications
     SignUpRequest:
       type: object
       properties:

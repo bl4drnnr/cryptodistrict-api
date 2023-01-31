@@ -5,7 +5,7 @@ import {
   Param,
   Post,
   Res,
-  Headers
+  UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
@@ -20,9 +20,10 @@ import {
   SignInResponse,
   SignUpRequest,
   SignUpResponse,
-  GetSettingsRequest,
   GetSettingsResponse
 } from './dto/user-dtos.export';
+import { JwtGuard } from '@guards/jwt.guard';
+import { FastifyReply } from 'fastify';
 
 @ApiTags('Users')
 @Controller('user')
@@ -32,7 +33,7 @@ export class UserController {
   @ApiExtraModels(TwoFaDto)
   @Post('sign-in')
   async signIn(
-    @Res({ passthrough: true }) res: Response,
+    @Res({ passthrough: true }) res: FastifyReply,
     @Body() payload: SignInRequest
   ) {
     const { _at, _rt } = await this.userService.singIn(payload);
@@ -68,8 +69,9 @@ export class UserController {
   }
 
   @Get('get-settings')
-  async getSettings(@Headers() payload: GetSettingsRequest) {
-    const userSettings = await this.userService.getSettings(payload);
+  @UseGuards(JwtGuard)
+  async getSettings(@UserDecorator() user) {
+    const userSettings = await this.userService.getSettings(user);
 
     return new GetSettingsResponse(userSettings);
   }

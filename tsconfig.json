@@ -27,7 +27,8 @@
       "@decorators/*": ["src/decorators/*"],
       "@dto/*": ["src/dto/*"],
       "@interfaces/*": ["src/interfaces/*"],
-      "@docs/*": ["./docs/*"]
+      "@docs/*": ["./docs/*"],
+      "@guards/*": ["src/guards/*"]
     }
   }
 }
