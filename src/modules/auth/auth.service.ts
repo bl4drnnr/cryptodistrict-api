@@ -58,7 +58,7 @@ export class AuthService {
     });
   }
 
-  private verifyToken<T extends ITokenPayload, R extends ITokenError>(
+  verifyToken<T extends ITokenPayload, R extends ITokenError>(
     token: string
   ): T | R {
     try {

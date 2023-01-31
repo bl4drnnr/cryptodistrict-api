@@ -1,13 +1,13 @@
 openapi: 3.0.0
 paths:
   /api/auth/refresh:
-    post:
+    get:
       operationId: AuthController_refreshToken
       summary: ""
       description: ""
       parameters: []
       responses:
-        "201":
+        "200":
           description: ""
           content:
             application/json:
