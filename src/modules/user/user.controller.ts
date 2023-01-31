@@ -8,7 +8,6 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Response } from 'express';
 import { UserDecorator } from '@decorators/user.decorator';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { ConfirmHashDto } from '@dto/confirm-hash.dto';
@@ -52,9 +51,10 @@ export class UserController {
   }
 
   @Post('logout')
+  @UseGuards(JwtGuard)
   async logout(
-    @UserDecorator({ passthrough: true }) userId: string,
-    @Res() res: Response
+    @UserDecorator() userId: string,
+    @Res({ passthrough: true }) res: FastifyReply
   ) {
     res.clearCookie('_rt');
     await this.userService.logout(userId);
@@ -70,8 +70,8 @@ export class UserController {
 
   @Get('get-settings')
   @UseGuards(JwtGuard)
-  async getSettings(@UserDecorator() user) {
-    const userSettings = await this.userService.getSettings(user);
+  async getSettings(@UserDecorator() userId: string) {
+    const userSettings = await this.userService.getSettings(userId);
 
     return new GetSettingsResponse(userSettings);
   }

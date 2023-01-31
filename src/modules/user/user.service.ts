@@ -126,9 +126,9 @@ export class UserService {
     return await this.authService.deleteRefreshToken(userId);
   }
 
-  async getSettings(user: any) {
+  async getSettings(userId: string) {
     const userSettings = await this.prisma.users.findFirst({
-      where: { id: user.userId },
+      where: { id: userId },
       select: {
         firstName: true,
         lastName: true,
