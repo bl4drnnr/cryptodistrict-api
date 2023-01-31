@@ -5,7 +5,8 @@ import {
   Param,
   Post,
   Res,
-  Headers
+  Headers,
+  UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
@@ -23,6 +24,7 @@ import {
   GetSettingsRequest,
   GetSettingsResponse
 } from './dto/user-dtos.export';
+import { JwtGuard } from '@guards/jwt.guard';
 
 @ApiTags('Users')
 @Controller('user')
@@ -68,8 +70,9 @@ export class UserController {
   }
 
   @Get('get-settings')
-  async getSettings(@Headers() payload: GetSettingsRequest) {
-    const userSettings = await this.userService.getSettings(payload);
+  @UseGuards(JwtGuard)
+  async getSettings(@UserDecorator() user) {
+    const userSettings = await this.userService.getSettings(user);
 
     return new GetSettingsResponse(userSettings);
   }
