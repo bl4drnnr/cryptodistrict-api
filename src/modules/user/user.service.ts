@@ -6,7 +6,12 @@ import { AuthService } from '@auth/auth.service';
 import { EmailService } from '@shared/email.service';
 import { LoggerService } from '@shared/logger.service';
 import { ValidatorService } from '@shared/validator.service';
-import { SignInRequest, SignUpRequest } from './dto/user-dtos.export';
+import {
+  ChangeEmailRequest,
+  ChangePasswordRequest,
+  SignInRequest,
+  SignUpRequest
+} from './dto/user-dtos.export';
 import {
   WrongCredentialsException,
   AccountNotConfirmedException,
@@ -174,6 +179,14 @@ export class UserService {
   }
 
   async closeAccount(userId: string) {
+    //
+  }
+
+  async changePassword(userId: string, payload: ChangePasswordRequest) {
+    //
+  }
+
+  async changeEmail(userId: string, payload: ChangeEmailRequest) {
     //
   }
 }

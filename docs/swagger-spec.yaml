@@ -204,6 +204,47 @@ paths:
               schema:
                 $ref: "#/components/schemas/VerifyPhoneResponse"
       tags: *a3
+  /api/twofactor/set:
+    post:
+      operationId: TwofactorController_setTwoFa
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetTwoFaRequest"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SetTwoFaResponse"
+      tags: &a4
+        - 2FA
+  /api/twofactor/remove:
+    post:
+      operationId: TwofactorController_removeTwoFa
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RemoveTwoFaRequest"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RemoveTwoFaResponse"
+      tags: *a4
 info:
   title: Cryptodiscrict API
   description: Cryptodiscrict API documentation
@@ -248,27 +289,6 @@ components:
           type: string
       required:
         - token
-    TwoFaDto:
-      type: object
-      properties:
-        id:
-          type: string
-        twoFaToken:
-          type: string
-        userId:
-          type: string
-        updatedAt:
-          format: date-time
-          type: string
-        createdAt:
-          format: date-time
-          type: string
-      required:
-        - id
-        - twoFaToken
-        - userId
-        - updatedAt
-        - createdAt
     SignInRequest:
       type: object
       properties:
@@ -520,3 +540,36 @@ components:
           type: string
       required:
         - message
+    TwoFaDto:
+      type: object
+      properties:
+        id:
+          type: string
+        twoFaToken:
+          type: string
+        userId:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - twoFaToken
+        - userId
+        - updatedAt
+        - createdAt
+    SetTwoFaRequest:
+      type: object
+      properties: {}
+    SetTwoFaResponse:
+      type: object
+      properties: {}
+    RemoveTwoFaRequest:
+      type: object
+      properties: {}
+    RemoveTwoFaResponse:
+      type: object
+      properties: {}

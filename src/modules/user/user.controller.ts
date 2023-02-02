@@ -12,7 +12,6 @@ import { UserService } from './user.service';
 import { UserDecorator } from '@decorators/user.decorator';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { ConfirmHashDto } from '@dto/confirm-hash.dto';
-import { TwoFaDto } from '@dto/twofa.dto';
 import { UserDto } from '@dto/user.dto';
 import {
   LogoutResponse,
@@ -20,19 +19,22 @@ import {
   SignInResponse,
   SignUpRequest,
   SignUpResponse,
-  GetSettingsResponse
+  GetSettingsResponse,
+  CloseAccountResponse,
+  FreezeAccountResponse,
+  ChangePasswordResponse,
+  ChangeEmailResponse,
+  ChangePasswordRequest,
+  ChangeEmailRequest
 } from './dto/user-dtos.export';
 import { JwtGuard } from '@guards/jwt.guard';
 import { FastifyReply } from 'fastify';
-import { CloseAccountResponse } from '@user/dto/close-account/response.dto';
-import { FreezeAccountResponse } from '@user/dto/freeze-account/response.dto';
 
 @ApiTags('Users')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiExtraModels(TwoFaDto)
   @Post('sign-in')
   async signIn(
     @Res({ passthrough: true }) res: FastifyReply,
@@ -93,5 +95,27 @@ export class UserController {
     await this.userService.closeAccount(userId);
 
     return new CloseAccountResponse();
+  }
+
+  @Patch('change-password')
+  @UseGuards(JwtGuard)
+  async changePassword(
+    @UserDecorator() userId: string,
+    @Body() payload: ChangePasswordRequest
+  ) {
+    await this.userService.changePassword(userId, payload);
+
+    return new ChangePasswordResponse();
+  }
+
+  @Patch('change-email')
+  @UseGuards(JwtGuard)
+  async changeEmail(
+    @UserDecorator() userId: string,
+    @Body() payload: ChangeEmailRequest
+  ) {
+    await this.userService.changeEmail(userId, payload);
+
+    return new ChangeEmailResponse();
   }
 }
