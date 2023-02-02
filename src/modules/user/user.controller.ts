@@ -23,6 +23,8 @@ import {
 } from './dto/user-dtos.export';
 import { JwtGuard } from '@guards/jwt.guard';
 import { FastifyReply } from 'fastify';
+import { CloseAccountResponse } from '@user/dto/close-account/response.dto';
+import { FreezeAccountResponse } from '@user/dto/freeze-account/response.dto';
 
 @ApiTags('Users')
 @Controller('user')
@@ -74,5 +76,21 @@ export class UserController {
     const userSettings = await this.userService.getSettings(userId);
 
     return new GetSettingsResponse(userSettings);
+  }
+
+  @Post('freeze-account')
+  @UseGuards(JwtGuard)
+  async freezeAccount(@UserDecorator() userId: string) {
+    await this.userService.freezeAccount(userId);
+
+    return new FreezeAccountResponse();
+  }
+
+  @Post('close-account')
+  @UseGuards(JwtGuard)
+  async closeAccount(@UserDecorator() userId: string) {
+    await this.userService.closeAccount(userId);
+
+    return new CloseAccountResponse();
   }
 }
