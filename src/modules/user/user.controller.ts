@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Res,
+  Patch,
   UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -78,7 +79,7 @@ export class UserController {
     return new GetSettingsResponse(userSettings);
   }
 
-  @Post('freeze-account')
+  @Patch('freeze-account')
   @UseGuards(JwtGuard)
   async freezeAccount(@UserDecorator() userId: string) {
     await this.userService.freezeAccount(userId);
@@ -86,7 +87,7 @@ export class UserController {
     return new FreezeAccountResponse();
   }
 
-  @Post('close-account')
+  @Patch('close-account')
   @UseGuards(JwtGuard)
   async closeAccount(@UserDecorator() userId: string) {
     await this.userService.closeAccount(userId);

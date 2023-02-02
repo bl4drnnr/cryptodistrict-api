@@ -116,13 +116,13 @@ paths:
                 $ref: "#/components/schemas/GetSettingsResponse"
       tags: *a2
   /api/user/freeze-account:
-    post:
+    patch:
       operationId: UserController_freezeAccount
       summary: ""
       description: ""
       parameters: []
       responses:
-        "201":
+        "200":
           description: ""
           content:
             application/json:
@@ -130,13 +130,13 @@ paths:
                 $ref: "#/components/schemas/FreezeAccountResponse"
       tags: *a2
   /api/user/close-account:
-    post:
+    patch:
       operationId: UserController_closeAccount
       summary: ""
       description: ""
       parameters: []
       responses:
-        "201":
+        "200":
           description: ""
           content:
             application/json:
