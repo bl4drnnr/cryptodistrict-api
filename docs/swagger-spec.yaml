@@ -115,6 +115,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetSettingsResponse"
       tags: *a2
+  /api/user/freeze-account:
+    patch:
+      operationId: UserController_freezeAccount
+      summary: ""
+      description: ""
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FreezeAccountResponse"
+      tags: *a2
+  /api/user/close-account:
+    patch:
+      operationId: UserController_closeAccount
+      summary: ""
+      description: ""
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloseAccountResponse"
+      tags: *a2
   /api/phone/unbind:
     post:
       operationId: PhoneController_unbindPhone
@@ -397,6 +425,20 @@ components:
           type: object
       required:
         - settings
+    FreezeAccountResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    CloseAccountResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
     UnbindPhoneRequest:
       type: object
       properties: {}

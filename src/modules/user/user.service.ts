@@ -168,4 +168,12 @@ export class UserService {
       }
     };
   }
+
+  async freezeAccount(userId: string) {
+    //
+  }
+
+  async closeAccount(userId: string) {
+    //
+  }
 }
