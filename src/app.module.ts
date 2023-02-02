@@ -10,6 +10,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ConfigModule } from '@nestjs/config';
 import { PhoneModule } from '@phone/phone.module';
 import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
+import { TwofactorModule } from '@twofactor/twofactor.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`
-    })
+    }),
+    TwofactorModule
   ]
 })
 export class AppModule implements NestModule {

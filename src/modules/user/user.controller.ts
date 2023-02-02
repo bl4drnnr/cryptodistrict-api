@@ -12,7 +12,6 @@ import { UserService } from './user.service';
 import { UserDecorator } from '@decorators/user.decorator';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { ConfirmHashDto } from '@dto/confirm-hash.dto';
-import { TwoFaDto } from '@dto/twofa.dto';
 import { UserDto } from '@dto/user.dto';
 import {
   LogoutResponse,
@@ -32,7 +31,6 @@ import { FreezeAccountResponse } from '@user/dto/freeze-account/response.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiExtraModels(TwoFaDto)
   @Post('sign-in')
   async signIn(
     @Res({ passthrough: true }) res: FastifyReply,
