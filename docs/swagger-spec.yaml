@@ -143,6 +143,46 @@ paths:
               schema:
                 $ref: "#/components/schemas/CloseAccountResponse"
       tags: *a2
+  /api/user/change-password:
+    patch:
+      operationId: UserController_changePassword
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordRequest"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChangePasswordResponse"
+      tags: *a2
+  /api/user/change-email:
+    patch:
+      operationId: UserController_changeEmail
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeEmailRequest"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChangeEmailResponse"
+      tags: *a2
   /api/phone/unbind:
     post:
       operationId: PhoneController_unbindPhone
@@ -319,6 +359,10 @@ components:
           type: string
         phoneNumber:
           type: string
+        username:
+          type: string
+        userNumber:
+          type: string
         email:
           type: string
         password:
@@ -334,6 +378,8 @@ components:
         bio:
           type: string
         tac:
+          type: boolean
+        publicEmail:
           type: boolean
         accountConfirm:
           type: boolean
@@ -357,6 +403,8 @@ components:
         - firstName
         - lastName
         - phoneNumber
+        - username
+        - userNumber
         - email
         - password
         - twitter
@@ -365,6 +413,7 @@ components:
         - title
         - bio
         - tac
+        - publicEmail
         - accountConfirm
         - updatedAt
         - createdAt
@@ -384,6 +433,8 @@ components:
         password:
           type: string
           minLength: 8
+        username:
+          type: string
         twitter:
           type: string
         linkedIn:
@@ -396,9 +447,12 @@ components:
           type: string
         tac:
           type: boolean
+        publicEmail:
+          type: boolean
       required:
         - email
         - password
+        - username
         - tac
     SignUpResponse:
       type: object
@@ -459,6 +513,18 @@ components:
           type: string
       required:
         - message
+    ChangePasswordRequest:
+      type: object
+      properties: {}
+    ChangePasswordResponse:
+      type: object
+      properties: {}
+    ChangeEmailRequest:
+      type: object
+      properties: {}
+    ChangeEmailResponse:
+      type: object
+      properties: {}
     UnbindPhoneRequest:
       type: object
       properties: {}

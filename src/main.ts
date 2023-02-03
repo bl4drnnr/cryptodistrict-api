@@ -33,7 +33,7 @@ import { fastifyCookie } from '@fastify/cookie';
   fs.writeFileSync('./docs/swagger-spec.yaml', yamlString);
   fs.writeFileSync('./docs/swagger-spec.json', JSON.stringify(document));
 
-  SwaggerModule.setup('/api/docs', app, document);
+  SwaggerModule.setup('/docs', app, document);
 
   await app.listen(3000);
 })();

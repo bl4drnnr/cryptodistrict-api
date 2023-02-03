@@ -27,6 +27,10 @@ export class SignUpRequest {
   password: string;
 
   @IsString()
+  @IsNotEmpty()
+  username: string;
+
+  @IsString()
   @IsOptional()
   twitter?: string;
 
@@ -48,4 +52,8 @@ export class SignUpRequest {
 
   @IsBoolean()
   tac: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  publicEmail?: boolean;
 }

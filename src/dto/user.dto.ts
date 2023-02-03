@@ -11,6 +11,10 @@ export class UserDto implements Users {
   @ApiProperty()
   phoneNumber: string;
   @ApiProperty()
+  username: string;
+  @ApiProperty()
+  userNumber: string;
+  @ApiProperty()
   email: string;
   @ApiProperty()
   password: string;
@@ -26,6 +30,8 @@ export class UserDto implements Users {
   bio: string;
   @ApiProperty()
   tac: boolean;
+  @ApiProperty()
+  publicEmail: boolean;
   @ApiProperty()
   accountConfirm: boolean;
   @ApiProperty()

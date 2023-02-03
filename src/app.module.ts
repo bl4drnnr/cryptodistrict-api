@@ -28,7 +28,7 @@ import { TwofactorModule } from '@twofactor/twofactor.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(BasicAuthMiddleware).forRoutes({
-      path: '*',
+      path: '/api/*',
       method: RequestMethod.ALL
     });
   }
