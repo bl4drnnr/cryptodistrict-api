@@ -201,7 +201,12 @@ export class UserService {
     userId: string,
     payload: SetPersonalSettingsRequest
   ) {
-    //
+    console.log('userId', userId);
+    console.log('payload', payload);
+    return await this.prisma.users.update({
+      where: { id: userId },
+      data: { ...payload }
+    });
   }
 
   async updateUserNotificationSettings(

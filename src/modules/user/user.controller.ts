@@ -28,7 +28,8 @@ import {
   ChangeEmailRequest,
   SetPersonalSettingsRequest,
   SetPersonalSettingsResponse,
-  SetNotificationSettingsRequest
+  SetNotificationSettingsRequest,
+  SetNotificationSettingsResponse
 } from './dto/user-dtos.export';
 import { JwtGuard } from '@guards/jwt.guard';
 import { FastifyReply } from 'fastify';
@@ -88,7 +89,7 @@ export class UserController {
   @UseGuards(JwtGuard)
   async setPersonalSettings(
     @UserDecorator() userId: string,
-    payload: SetPersonalSettingsRequest
+    @Body() payload: SetPersonalSettingsRequest
   ) {
     await this.userService.updateUserPersonalSettings(userId, payload);
 
@@ -99,11 +100,11 @@ export class UserController {
   @UseGuards(JwtGuard)
   async setNotificationSettings(
     @UserDecorator() userId: string,
-    payload: SetNotificationSettingsRequest
+    @Body() payload: SetNotificationSettingsRequest
   ) {
     await this.userService.updateUserNotificationSettings(userId, payload);
 
-    return new SetPersonalSettingsResponse();
+    return new SetNotificationSettingsResponse();
   }
 
   @Patch('freeze-account')
