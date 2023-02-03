@@ -1,13 +1,13 @@
 interface IPersonalInformation {
   firstName: string;
   lastName: string;
-  phoneNumber: string;
-  email: string;
   twitter: string;
   linkedIn: string;
   personalWebsite: string;
   title: string;
   bio: string;
+  username: string;
+  publicEmail: boolean;
 }
 
 interface INotificationSettings {
@@ -18,6 +18,8 @@ interface ISecuritySettings {
   emailChanged: boolean;
   lastPassChange: Date;
   twoFaType: string;
+  email: string;
+  phoneNumber: string;
 }
 
 interface ISettings {

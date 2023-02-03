@@ -150,7 +150,9 @@ export class UserService {
         emailChanged: true,
         lastPassChange: true,
         twoFaType: true,
-        receiveNotifications: true
+        receiveNotifications: true,
+        username: true,
+        publicEmail: true
       }
     });
 
@@ -158,13 +160,13 @@ export class UserService {
       personalInformation: {
         firstName: userSettings.firstName,
         lastName: userSettings.lastName,
-        phoneNumber: userSettings.phoneNumber,
-        email: userSettings.email,
         twitter: userSettings.title,
         linkedIn: userSettings.linkedIn,
         personalWebsite: userSettings.personalWebsite,
         title: userSettings.title,
-        bio: userSettings.bio
+        bio: userSettings.bio,
+        username: userSettings.username,
+        publicEmail: userSettings.publicEmail
       },
       notificationSettings: {
         receiveNotifications: userSettings.receiveNotifications
@@ -172,7 +174,9 @@ export class UserService {
       securitySettings: {
         emailChanged: userSettings.emailChanged,
         lastPassChange: userSettings.lastPassChange,
-        twoFaType: userSettings.twoFaType
+        twoFaType: userSettings.twoFaType,
+        email: userSettings.email,
+        phoneNumber: userSettings.phoneNumber
       }
     };
   }
