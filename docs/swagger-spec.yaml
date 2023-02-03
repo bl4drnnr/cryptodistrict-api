@@ -121,6 +121,12 @@ paths:
       summary: ""
       description: ""
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetPersonalSettingsRequest"
       responses:
         "200":
           description: ""
@@ -135,13 +141,19 @@ paths:
       summary: ""
       description: ""
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetNotificationSettingsRequest"
       responses:
         "200":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SetPersonalSettingsResponse"
+                $ref: "#/components/schemas/SetNotificationSettingsResponse"
       tags: *a2
   /api/user/freeze-account:
     patch:
@@ -527,7 +539,38 @@ components:
           type: object
       required:
         - settings
+    SetPersonalSettingsRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        twitter:
+          type: string
+        linkedIn:
+          type: string
+        personalWebsite:
+          type: string
+        title:
+          type: string
+        bio:
+          type: string
+        username:
+          type: string
+        publicEmail:
+          type: boolean
     SetPersonalSettingsResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    SetNotificationSettingsRequest:
+      type: object
+      properties: {}
+    SetNotificationSettingsResponse:
       type: object
       properties: {}
     FreezeAccountResponse:
