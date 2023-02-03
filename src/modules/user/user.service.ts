@@ -8,11 +8,12 @@ import { LoggerService } from '@shared/logger.service';
 import { ValidatorService } from '@shared/validator.service';
 import {
   ChangeEmailRequest,
-  ChangePasswordRequest, SetNotificationSettingsRequest,
+  ChangePasswordRequest,
+  SetNotificationSettingsRequest,
   SetPersonalSettingsRequest,
   SignInRequest,
   SignUpRequest
-} from "./dto/user-dtos.export";
+} from './dto/user-dtos.export';
 import {
   WrongCredentialsException,
   AccountNotConfirmedException,
@@ -211,6 +212,9 @@ export class UserService {
     userId: string,
     payload: SetNotificationSettingsRequest
   ) {
-    //
+    return await this.prisma.users.update({
+      where: { id: userId },
+      data: { ...payload }
+    });
   }
 }
