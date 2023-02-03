@@ -10,3 +10,5 @@ export * from './change-email/request.dto';
 export * from './change-email/response.dto';
 export * from './change-password/request.dto';
 export * from './change-password/response.dto';
+export * from './set-settings/request.dto';
+export * from './set-settings/response.dto';

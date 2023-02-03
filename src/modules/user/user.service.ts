@@ -9,6 +9,7 @@ import { ValidatorService } from '@shared/validator.service';
 import {
   ChangeEmailRequest,
   ChangePasswordRequest,
+  SetSettingsRequest,
   SignInRequest,
   SignUpRequest
 } from './dto/user-dtos.export';
@@ -189,6 +190,10 @@ export class UserService {
   }
 
   async changeEmail(userId: string, payload: ChangeEmailRequest) {
+    //
+  }
+
+  async updateUserSettings(userId: string, payload: SetSettingsRequest) {
     //
   }
 }
