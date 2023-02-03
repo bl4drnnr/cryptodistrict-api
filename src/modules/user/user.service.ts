@@ -8,10 +8,11 @@ import { LoggerService } from '@shared/logger.service';
 import { ValidatorService } from '@shared/validator.service';
 import {
   ChangeEmailRequest,
-  ChangePasswordRequest,
+  ChangePasswordRequest, SetNotificationSettingsRequest,
+  SetPersonalSettingsRequest,
   SignInRequest,
   SignUpRequest
-} from './dto/user-dtos.export';
+} from "./dto/user-dtos.export";
 import {
   WrongCredentialsException,
   AccountNotConfirmedException,
@@ -31,15 +32,15 @@ export class UserService {
     private readonly loggerService: LoggerService
   ) {}
 
-  async singIn(SignInRequest: SignInRequest) {
+  async singIn(payload: SignInRequest) {
     const user = await this.prisma.users.findFirst({
-      where: { email: SignInRequest.email }
+      where: { email: payload.email }
     });
     if (!user) throw new WrongCredentialsException();
     if (!user.accountConfirm) throw new AccountNotConfirmedException();
 
     const passwordEquality = await bcryptjs.compare(
-      SignInRequest.password,
+      payload.password,
       user.password
     );
     if (!passwordEquality) throw new WrongCredentialsException();
@@ -50,25 +51,27 @@ export class UserService {
     });
   }
 
-  async signUp(SignUpRequest: SignUpRequest) {
+  async signUp(payload: SignUpRequest) {
     const alreadyExistingUser = await this.prisma.users.findFirst({
-      where: { email: SignUpRequest.email }
+      where: { email: payload.email }
     });
     if (alreadyExistingUser) throw new UserAlreadyExistsException();
 
-    if (!SignUpRequest.tac) throw new TacNotAcceptedException();
+    if (!payload.tac) throw new TacNotAcceptedException();
 
     if (
-      !this.validatorService.validateEmail(SignUpRequest.email) ||
-      !this.validatorService.validatePassword(SignUpRequest.password)
+      !this.validatorService.validateEmail(payload.email) ||
+      !this.validatorService.validatePassword(payload.password)
     )
       throw new ValidationErrorException();
 
-    const hashedPassword = await bcryptjs.hash(SignUpRequest.password, 10);
+    const hashedPassword = await bcryptjs.hash(payload.password, 10);
+    const userNumber = Math.round(Math.random() * 1e10).toString();
 
     const createdUser = await this.prisma.users.create({
       data: {
-        ...SignUpRequest,
+        ...payload,
+        userNumber,
         password: hashedPassword
       }
     });
@@ -82,7 +85,7 @@ export class UserService {
       data: { userId: createdUser.id, confirmHash }
     });
     await this.emailService.sendConfirmationEmail({
-      target: SignUpRequest.email,
+      target: payload.email,
       confirmHash
     });
 
@@ -147,7 +150,9 @@ export class UserService {
         emailChanged: true,
         lastPassChange: true,
         twoFaType: true,
-        receiveNotifications: true
+        receiveNotifications: true,
+        username: true,
+        publicEmail: true
       }
     });
 
@@ -155,13 +160,13 @@ export class UserService {
       personalInformation: {
         firstName: userSettings.firstName,
         lastName: userSettings.lastName,
-        phoneNumber: userSettings.phoneNumber,
-        email: userSettings.email,
         twitter: userSettings.title,
         linkedIn: userSettings.linkedIn,
         personalWebsite: userSettings.personalWebsite,
         title: userSettings.title,
-        bio: userSettings.bio
+        bio: userSettings.bio,
+        username: userSettings.username,
+        publicEmail: userSettings.publicEmail
       },
       notificationSettings: {
         receiveNotifications: userSettings.receiveNotifications
@@ -169,7 +174,9 @@ export class UserService {
       securitySettings: {
         emailChanged: userSettings.emailChanged,
         lastPassChange: userSettings.lastPassChange,
-        twoFaType: userSettings.twoFaType
+        twoFaType: userSettings.twoFaType,
+        email: userSettings.email,
+        phoneNumber: userSettings.phoneNumber
       }
     };
   }
@@ -187,6 +194,20 @@ export class UserService {
   }
 
   async changeEmail(userId: string, payload: ChangeEmailRequest) {
+    //
+  }
+
+  async updateUserPersonalSettings(
+    userId: string,
+    payload: SetPersonalSettingsRequest
+  ) {
+    //
+  }
+
+  async updateUserNotificationSettings(
+    userId: string,
+    payload: SetNotificationSettingsRequest
+  ) {
     //
   }
 }

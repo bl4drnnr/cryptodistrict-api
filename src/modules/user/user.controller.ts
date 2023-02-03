@@ -25,7 +25,10 @@ import {
   ChangePasswordResponse,
   ChangeEmailResponse,
   ChangePasswordRequest,
-  ChangeEmailRequest
+  ChangeEmailRequest,
+  SetPersonalSettingsRequest,
+  SetPersonalSettingsResponse,
+  SetNotificationSettingsRequest
 } from './dto/user-dtos.export';
 import { JwtGuard } from '@guards/jwt.guard';
 import { FastifyReply } from 'fastify';
@@ -79,6 +82,28 @@ export class UserController {
     const userSettings = await this.userService.getSettings(userId);
 
     return new GetSettingsResponse(userSettings);
+  }
+
+  @Patch('set-personal-settings')
+  @UseGuards(JwtGuard)
+  async setPersonalSettings(
+    @UserDecorator() userId: string,
+    payload: SetPersonalSettingsRequest
+  ) {
+    await this.userService.updateUserPersonalSettings(userId, payload);
+
+    return new SetPersonalSettingsResponse();
+  }
+
+  @Patch('set-notification-settings')
+  @UseGuards(JwtGuard)
+  async setNotificationSettings(
+    @UserDecorator() userId: string,
+    payload: SetNotificationSettingsRequest
+  ) {
+    await this.userService.updateUserNotificationSettings(userId, payload);
+
+    return new SetPersonalSettingsResponse();
   }
 
   @Patch('freeze-account')

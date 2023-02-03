@@ -10,3 +10,7 @@ export * from './change-email/request.dto';
 export * from './change-email/response.dto';
 export * from './change-password/request.dto';
 export * from './change-password/response.dto';
+export * from './set-personal-settings/request.dto';
+export * from './set-personal-settings/response.dto';
+export * from './set-notification-settings/response.dto';
+export * from './set-notification-settings/request.dto';

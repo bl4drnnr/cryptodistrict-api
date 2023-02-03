@@ -14,6 +14,8 @@ model Users {
     firstName            String?    @map("first_name") @db.Citext
     lastName             String?    @map("last_name") @db.Citext
     phoneNumber          String?    @map("phone_number") @unique
+    username             String
+    userNumber           String     @map("user_number") @unique
     email                String     @unique
     password             String
     twitter              String?
@@ -21,7 +23,9 @@ model Users {
     personalWebsite      String?    @map("personal_website")
     title                String?
     bio                  String?
+
     tac                  Boolean
+    publicEmail          Boolean?    @map("public_email") @default(false)
     accountConfirm       Boolean    @map("account_confirm") @default(false)
     emailChanged         Boolean    @map("email_changed") @default(false)
     lastPassChange       DateTime?  @map("last_pass_change")
