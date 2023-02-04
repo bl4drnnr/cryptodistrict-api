@@ -7,8 +7,12 @@ import { IRefreshToken } from '@interfaces/refresh-token.interface';
 import * as uuid from 'uuid';
 import * as jwt from 'jsonwebtoken';
 import { ITokenPayload } from '@interfaces/token-payload.interface';
-import { ITokenError } from '@interfaces/token-error.interface';
-import { CorruptedTokenException } from './exceptions/auth-exceptions.export';
+import {
+  CorruptedTokenException,
+  ExpiredTokenException,
+  InvalidTokenException,
+  SessionHasExpiredException
+} from './exceptions/auth-exceptions.export';
 import { UserService } from '@user/user.service';
 
 @Injectable()
@@ -61,18 +65,17 @@ export class AuthService {
     });
   }
 
-  verifyToken<T extends ITokenPayload, R extends ITokenError>(
-    token: string
-  ): T | R {
+  verifyToken(token: string) {
     try {
       return this.jwtService.verify(token, {
         secret: this.configService.jwtAuthConfig.secret
       });
-    } catch (e: any) {
-      if (e instanceof jwt.TokenExpiredError)
-        return <R>{ message: 'token-expired' };
-      else if (e instanceof jwt.JsonWebTokenError)
-        return <R>{ message: 'invalid-token' };
+    } catch (error: any) {
+      if (error instanceof jwt.TokenExpiredError)
+        throw new ExpiredTokenException();
+      else if (error instanceof jwt.JsonWebTokenError)
+        throw new InvalidTokenException();
+      else throw new SessionHasExpiredException();
     }
   }
 
@@ -97,13 +100,9 @@ export class AuthService {
   async refreshToken(tokenRefresh: string) {
     if (!tokenRefresh) throw new CorruptedTokenException();
 
-    const payload: ITokenPayload | ITokenError = this.verifyToken(tokenRefresh);
-
-    if (!payload || !('type' in payload)) throw new CorruptedTokenException();
+    const payload: ITokenPayload = this.verifyToken(tokenRefresh);
 
     const token = await this.getTokenById(payload.id);
-
-    if (!token) throw new CorruptedTokenException();
 
     const user = await this.prisma.users.findFirst({
       where: { id: token.userId }
