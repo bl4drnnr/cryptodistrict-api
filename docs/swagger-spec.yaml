@@ -383,8 +383,11 @@ components:
       properties:
         _at:
           type: string
+        user:
+          type: object
       required:
         - _at
+        - user
     CheckTokenRequest:
       type: object
       properties:

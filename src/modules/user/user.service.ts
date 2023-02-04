@@ -1,6 +1,11 @@
 import * as bcryptjs from 'bcryptjs';
 import * as crypto from 'crypto';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable
+} from '@nestjs/common';
 import { PrismaService } from '@shared/prisma.service';
 import { AuthService } from '@auth/auth.service';
 import { EmailService } from '@shared/email.service';
@@ -28,6 +33,7 @@ import {
 export class UserService {
   constructor(
     private readonly prisma: PrismaService,
+    @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
     private readonly emailService: EmailService,
     private readonly validatorService: ValidatorService,
