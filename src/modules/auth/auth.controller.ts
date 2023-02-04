@@ -1,5 +1,5 @@
 import { AuthService } from '@auth/auth.service';
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { Cookie } from '@decorators/cookie.decorator';
 import { Response } from 'express';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
@@ -9,6 +9,8 @@ import {
   RefreshTokenResponse,
   CheckTokenRequest
 } from './dto/auth-dtos.export';
+import { JwtGuard } from '@guards/jwt.guard';
+import { UserDecorator } from '@decorators/user.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -17,15 +19,19 @@ export class AuthController {
 
   @ApiExtraModels(SessionDto)
   @Get('/refresh')
+  @UseGuards(JwtGuard)
   async refreshToken(
     @Res({ passthrough: true }) res: FastifyReply,
-    @Cookie('_rt') refreshToken: string
+    @Cookie('_rt') refreshToken: string,
+    @UserDecorator() userId: string
   ) {
-    const { _rt, _at } = await this.authService.refreshToken(refreshToken);
+    const { _rt, _at, userData } = await this.authService.refreshToken(
+      refreshToken
+    );
 
     res.cookie('_rt', _rt);
 
-    return new RefreshTokenResponse(_at);
+    return new RefreshTokenResponse(_at, userData);
   }
 
   @ApiExtraModels(SessionDto)
