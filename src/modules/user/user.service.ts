@@ -20,7 +20,8 @@ import {
   UserAlreadyExistsException,
   TacNotAcceptedException,
   ValidationErrorException,
-  EmailAlreadyConfirmedException
+  EmailAlreadyConfirmedException,
+  UserNotFoundException
 } from './exceptions/user-exceptions.export';
 
 @Injectable()
@@ -124,11 +125,9 @@ export class UserService {
       }
     });
 
-    this.loggerService
+    return this.loggerService
       .loggerInstance()
       .log('info', `User account with hash ${confirmHash} has been confirmed.`);
-
-    return { message: 'success' };
   }
 
   async logout(userId: string) {
@@ -153,7 +152,8 @@ export class UserService {
         twoFaType: true,
         receiveNotifications: true,
         username: true,
-        publicEmail: true
+        publicEmail: true,
+        createdAt: true
       }
     });
 
@@ -167,7 +167,8 @@ export class UserService {
         title: userSettings.title,
         bio: userSettings.bio,
         username: userSettings.username,
-        publicEmail: userSettings.publicEmail
+        publicEmail: userSettings.publicEmail,
+        createdAt: userSettings.createdAt
       },
       notificationSettings: {
         receiveNotifications: userSettings.receiveNotifications
@@ -216,5 +217,31 @@ export class UserService {
       where: { id: userId },
       data: { ...payload }
     });
+  }
+
+  async getUserByUserNumber(userNumber: string) {
+    const user = await this.prisma.users.findFirst({
+      where: { userNumber },
+      select: {
+        username: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        twitter: true,
+        linkedIn: true,
+        personalWebsite: true,
+        title: true,
+        bio: true,
+        publicEmail: true,
+        createdAt: true
+      }
+    });
+
+    if (!user) throw new UserNotFoundException();
+
+    if (!user.publicEmail) delete user.email;
+    delete user.publicEmail;
+
+    return user;
   }
 }

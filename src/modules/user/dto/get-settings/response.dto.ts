@@ -8,6 +8,7 @@ interface IPersonalInformation {
   bio: string;
   username: string;
   publicEmail: boolean;
+  createdAt: Date;
 }
 
 interface INotificationSettings {
