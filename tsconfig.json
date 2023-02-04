@@ -29,7 +29,8 @@
       "@dto/*": ["src/dto/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@docs/*": ["./docs/*"],
-      "@guards/*": ["src/guards/*"]
+      "@guards/*": ["src/guards/*"],
+      "@webjobs/*": ["src/webjobs/*"]
     }
   }
 }
