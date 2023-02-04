@@ -1,20 +1,13 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AuthService } from '@auth/auth.service';
+import { CorruptedTokenException } from '@auth/exceptions/corrupted-token.exception';
+import { InvalidTokenException } from '@auth/exceptions/invalid-token.exception';
 
 interface ITokenPayload {
   id: string;
   type: string;
   userId: string;
-}
-
-interface ITokenError {
-  message: string;
 }
 
 @Injectable()
@@ -26,20 +19,15 @@ export class JwtGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const req = context.switchToHttp().getRequest();
     const authHeader = req.headers['application-authorization'];
-    if (!authHeader)
-      throw new UnauthorizedException({ message: 'unauthorized' });
+
+    if (!authHeader) throw new InvalidTokenException();
 
     const bearer = authHeader.split(' ')[0];
     const token = authHeader.split(' ')[1];
 
-    if (bearer !== 'Bearer' || !token)
-      throw new UnauthorizedException({ message: 'unauthorized' });
+    if (bearer !== 'Bearer' || !token) throw new CorruptedTokenException();
 
-    const payload: ITokenPayload | ITokenError =
-      this.authService.verifyToken(token);
-
-    if (!payload || !('type' in payload))
-      throw new UnauthorizedException({ message: 'unauthorized' });
+    const payload: ITokenPayload = this.authService.verifyToken(token);
 
     req.user = payload.userId;
     return true;
