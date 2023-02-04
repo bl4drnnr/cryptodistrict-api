@@ -95,7 +95,7 @@ export class UserController {
 
   @Get('get-user/:userNumber')
   async getUserByNumber(@Param() { userNumber }: GetUserRequest) {
-    const user = await this.userService.getUserByUserNumber(userNumber);
+    const user = await this.userService.getUser({ userNumber });
 
     return new GetUserResponse(user);
   }

@@ -9,13 +9,15 @@ import * as jwt from 'jsonwebtoken';
 import { ITokenPayload } from '@interfaces/token-payload.interface';
 import { ITokenError } from '@interfaces/token-error.interface';
 import { CorruptedTokenException } from './exceptions/auth-exceptions.export';
+import { UserService } from '@user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
-    private readonly configService: ApiConfigService
+    private readonly configService: ApiConfigService,
+    private readonly userService: UserService
   ) {}
 
   private generateAccessToken(IAccessToken: IAccessToken) {
@@ -106,10 +108,16 @@ export class AuthService {
       where: { id: token.userId }
     });
 
-    return await this.updateTokens({
+    const { _at, _rt } = await this.updateTokens({
       userId: user.id,
       email: user.email
     });
+
+    const userData = await this.userService.getUser({
+      userId: user.id
+    });
+
+    return { _at, _rt, userData };
   }
 
   async deleteRefreshToken(userId: string) {

@@ -219,9 +219,15 @@ export class UserService {
     });
   }
 
-  async getUserByUserNumber(userNumber: string) {
+  async getUser({
+    userNumber,
+    userId
+  }: {
+    userNumber?: string;
+    userId?: string;
+  }) {
     const user = await this.prisma.users.findFirst({
-      where: { userNumber },
+      where: { OR: [{ userNumber }, { id: userId }] },
       select: {
         username: true,
         firstName: true,
