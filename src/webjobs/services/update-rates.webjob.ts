@@ -6,7 +6,7 @@ import { PrismaService } from '@shared/prisma.service';
 import { ApiConfigService } from '@shared/config.service';
 import { CryptocurrencyDto } from '@dto/cryptocurrency.dto';
 
-interface ICoinsDataStatsu {
+interface ICoinsDataStats {
   total: number;
   totalCoins: number;
   totalMarkets: number;
@@ -16,7 +16,7 @@ interface ICoinsDataStatsu {
 }
 
 interface ICoinsData {
-  stats: ICoinsDataStatsu;
+  stats: ICoinsDataStats;
   coins: CryptocurrencyDto[];
 }
 
@@ -54,7 +54,7 @@ export class UpdateRatesWebjob {
       }
     );
 
-    this.loggerService
+    return this.loggerService
       .loggerInstance()
       .log('warn', `Crypto rates have been updated successfully.`);
   }

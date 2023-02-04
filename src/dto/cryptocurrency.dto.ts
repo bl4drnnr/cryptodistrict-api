@@ -5,7 +5,7 @@ export class CryptocurrencyDto implements Cryptocurrency {
   @ApiProperty()
   id: string;
   @ApiProperty()
-  cryptoId: string;
+  uuid: string;
   @ApiProperty()
   symbol: string;
   @ApiProperty()
