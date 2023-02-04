@@ -100,6 +100,10 @@ paths:
       responses:
         "200":
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountConfirmationResponse"
       tags: *a2
   /api/user/get-settings:
     get:
@@ -114,6 +118,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetSettingsResponse"
+      tags: *a2
+  "/api/user/get-user/{userNumber}":
+    get:
+      operationId: UserController_getUserByNumber
+      summary: ""
+      description: ""
+      parameters:
+        - name: userNumber
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetUserResponse"
       tags: *a2
   /api/user/set-personal-settings:
     patch:
@@ -532,6 +555,13 @@ components:
         - confirmed
         - updatedAt
         - createdAt
+    AccountConfirmationResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
     GetSettingsResponse:
       type: object
       properties:
@@ -539,6 +569,9 @@ components:
           type: object
       required:
         - settings
+    GetUserResponse:
+      type: object
+      properties: {}
     SetPersonalSettingsRequest:
       type: object
       properties:

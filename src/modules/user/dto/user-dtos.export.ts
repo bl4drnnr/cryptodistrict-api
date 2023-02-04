@@ -14,3 +14,5 @@ export * from './set-personal-settings/request.dto';
 export * from './set-personal-settings/response.dto';
 export * from './set-notification-settings/response.dto';
 export * from './set-notification-settings/request.dto';
+export * from './account-confirmation/response.dto';
+export * from './get-user/response.dto';
