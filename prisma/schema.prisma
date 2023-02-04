@@ -102,13 +102,35 @@ model TwoFa {
     id String @id @default(uuid()) @db.Uuid
 
     twoFaToken String @map("two_fa_token")
-    user       Users   @relation(fields: [userId], references: [id])
+    user       Users  @relation(fields: [userId], references: [id])
     userId     String @map("user_id") @unique @db.Uuid
 
     updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
     createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
     @@map("twofa")
+}
+
+model Cryptocurrency {
+    id          String @id @default(uuid()) @db.Uuid
+
+    cryptoId    String @map("crypto_id")
+    symbol      String
+    name        String
+    description String
+    iconUrl     String @map("icon_url")
+    websiteUrl  String @map("website_url")
+    Volume24h   String @map("volume_24h")
+    marketCap   String @map("market_cap")
+    price       String
+    btcPrice    String @map("btc_price")
+    change      String
+    rank        Int
+
+    updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+    @@map("cryptocurrency")
 }
 
 enum TwoFaType {

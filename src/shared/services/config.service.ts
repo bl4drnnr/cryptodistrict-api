@@ -73,7 +73,8 @@ export class ApiConfigService {
   get coinrankingCredentials() {
     return {
       key: this.getString('X_RAPIDAPI_KEY'),
-      host: this.getString('X_RAPIDAPI_HOST')
+      host: this.getString('X_RAPIDAPI_HOST'),
+      url: this.getString('X_RAPIDAPI_URL')
     };
   }
 }
