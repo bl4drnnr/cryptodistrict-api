@@ -571,7 +571,11 @@ components:
         - settings
     GetUserResponse:
       type: object
-      properties: {}
+      properties:
+        user:
+          type: object
+      required:
+        - user
     SetPersonalSettingsRequest:
       type: object
       properties:

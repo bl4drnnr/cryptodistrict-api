@@ -20,8 +20,9 @@ import {
   UserAlreadyExistsException,
   TacNotAcceptedException,
   ValidationErrorException,
-  EmailAlreadyConfirmedException, UserNotFoundException
-} from "./exceptions/user-exceptions.export";
+  EmailAlreadyConfirmedException,
+  UserNotFoundException
+} from './exceptions/user-exceptions.export';
 
 @Injectable()
 export class UserService {
@@ -235,5 +236,10 @@ export class UserService {
     });
 
     if (!user) throw new UserNotFoundException();
+
+    if (!user.publicEmail) delete user.email;
+    delete user.publicEmail;
+
+    return user;
   }
 }

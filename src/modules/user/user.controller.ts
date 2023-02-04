@@ -31,7 +31,9 @@ import {
   SetNotificationSettingsRequest,
   SetNotificationSettingsResponse,
   AccountConfirmationResponse,
-  GetUserResponse
+  GetUserResponse,
+  AccountConfirmationRequest,
+  GetUserRequest
 } from './dto/user-dtos.export';
 import { JwtGuard } from '@guards/jwt.guard';
 import { FastifyReply } from 'fastify';
@@ -75,7 +77,9 @@ export class UserController {
 
   @ApiExtraModels(ConfirmHashDto)
   @Get('account-confirmation/:confirmHash')
-  async accountConfirmation(@Param('confirmHash') confirmHash: string) {
+  async accountConfirmation(
+    @Param() { confirmHash }: AccountConfirmationRequest
+  ) {
     await this.userService.accountConfirmation({ confirmHash });
 
     return new AccountConfirmationResponse();
@@ -90,10 +94,10 @@ export class UserController {
   }
 
   @Get('get-user/:userNumber')
-  async getUserByNumber(@Param('userNumber') userNumber: string) {
+  async getUserByNumber(@Param() { userNumber }: GetUserRequest) {
     const user = await this.userService.getUserByUserNumber(userNumber);
 
-    return new GetUserResponse();
+    return new GetUserResponse(user);
   }
 
   @Patch('set-personal-settings')
