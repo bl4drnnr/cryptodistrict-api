@@ -114,10 +114,10 @@ model TwoFa {
 model Cryptocurrency {
     id          String @id @default(uuid()) @db.Uuid
 
-    cryptoId    String @map("crypto_id")
+    uuid        String @map("uuid")
     symbol      String
     name        String
-    description String
+    description String?
     iconUrl     String @map("icon_url")
     websiteUrl  String @map("website_url")
     Volume24h   String @map("volume_24h")
