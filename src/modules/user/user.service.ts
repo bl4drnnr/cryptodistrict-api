@@ -152,7 +152,8 @@ export class UserService {
         twoFaType: true,
         receiveNotifications: true,
         username: true,
-        publicEmail: true
+        publicEmail: true,
+        createdAt: true
       }
     });
 
@@ -166,7 +167,8 @@ export class UserService {
         title: userSettings.title,
         bio: userSettings.bio,
         username: userSettings.username,
-        publicEmail: userSettings.publicEmail
+        publicEmail: userSettings.publicEmail,
+        createdAt: userSettings.createdAt
       },
       notificationSettings: {
         receiveNotifications: userSettings.receiveNotifications
