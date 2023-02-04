@@ -74,7 +74,10 @@ export class ApiConfigService {
     return {
       key: this.getString('X_RAPIDAPI_KEY'),
       host: this.getString('X_RAPIDAPI_HOST'),
-      url: this.getString('X_RAPIDAPI_URL')
+      url: this.getString('X_RAPIDAPI_URL'),
+      reference_currency_uuid: this.getString('X_RAPIDAPI_TIME_UUID'),
+      time_period: this.getString('X_RAPIDAPI_TIME_PERIOD'),
+      limit: this.getString('X_RAPIDAPI_LIMIT')
     };
   }
 }

@@ -733,6 +733,57 @@ components:
           type: string
       required:
         - message
+    CryptocurrencyDto:
+      type: object
+      properties:
+        id:
+          type: string
+        cryptoId:
+          type: string
+        symbol:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        iconUrl:
+          type: string
+        websiteUrl:
+          type: string
+        Volume24h:
+          type: string
+        marketCap:
+          type: string
+        price:
+          type: string
+        btcPrice:
+          type: string
+        change:
+          type: string
+        rank:
+          type: number
+        updatedAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - cryptoId
+        - symbol
+        - name
+        - description
+        - iconUrl
+        - websiteUrl
+        - Volume24h
+        - marketCap
+        - price
+        - btcPrice
+        - change
+        - rank
+        - updatedAt
+        - createdAt
     TwoFaDto:
       type: object
       properties:
