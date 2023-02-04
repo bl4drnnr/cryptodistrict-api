@@ -11,13 +11,19 @@ import { ConfigModule } from '@nestjs/config';
 import { PhoneModule } from '@phone/phone.module';
 import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
 import { TwofactorModule } from '@twofactor/twofactor.module';
+import { CryptoModule } from '@crypto/crypto.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { WebjobsModule } from '@webjobs/webjobs.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     SharedModule,
+    WebjobsModule,
     PhoneModule,
+    CryptoModule,
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`

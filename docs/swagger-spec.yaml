@@ -291,6 +291,42 @@ paths:
               schema:
                 $ref: "#/components/schemas/VerifyPhoneResponse"
       tags: *a2
+  "/api/crypto/all/{page}/{limit}":
+    get:
+      operationId: CryptoController_getAllCryptocurrencies
+      summary: ""
+      description: ""
+      parameters:
+        - name: page
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: limit
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: &a3
+        - Cryptocurrencies
+  "/api/crypto/coin/{name}":
+    get:
+      operationId: CryptoController_getCoinByName
+      summary: ""
+      description: ""
+      parameters:
+        - name: name
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a3
   /api/twofactor/set:
     post:
       operationId: TwofactorController_setTwoFa
@@ -310,7 +346,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SetTwoFaResponse"
-      tags: &a3
+      tags: &a4
         - 2FA
   /api/twofactor/remove:
     post:
@@ -331,7 +367,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RemoveTwoFaResponse"
-      tags: *a3
+      tags: *a4
 info:
   title: Cryptodiscrict API
   description: Cryptodiscrict API documentation

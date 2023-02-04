@@ -69,4 +69,11 @@ export class ApiConfigService {
   get frontEndUrl() {
     return this.getString('FRONT_END_URL');
   }
+
+  get coinrankingCredentials() {
+    return {
+      key: this.getString('X_RAPIDAPI_KEY'),
+      host: this.getString('X_RAPIDAPI_HOST')
+    };
+  }
 }
