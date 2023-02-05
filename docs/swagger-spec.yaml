@@ -310,6 +310,10 @@ paths:
       responses:
         "200":
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAllCoinsResponse"
       tags: &a3
         - Cryptocurrencies
   "/api/crypto/coin/{name}":
@@ -844,6 +848,15 @@ components:
         - rank
         - updatedAt
         - createdAt
+    GetAllCoinsResponse:
+      type: object
+      properties:
+        coins:
+          type: array
+          items:
+            $ref: "#/components/schemas/CryptocurrencyDto"
+      required:
+        - coins
     GetCoinByNameResponse:
       type: object
       properties:

@@ -16,11 +16,8 @@ export class CryptoService {
   ) {}
 
   async getAllCoins({ page, limit }: { page: string; limit: string }) {
-    const parsedPage = parseInt(page);
-    const parsedLimit = parseInt(limit);
-
     return await this.prisma.cryptocurrency.findMany({
-      skip: parseInt(page),
+      skip: (parseInt(page) - 1) * parseInt(limit),
       take: parseInt(limit)
     });
   }
@@ -36,7 +33,7 @@ export class CryptoService {
 
     return {
       ...coin,
-      description: coin.description || 'asd',
+      description: coin.description || '',
       websiteUrl: coin.websiteUrl || ''
     };
   }
