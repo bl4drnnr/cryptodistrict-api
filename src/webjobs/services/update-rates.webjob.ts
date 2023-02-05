@@ -64,7 +64,6 @@ export class UpdateRatesWebjob {
       delete item['lowVolume'];
       delete item['sparkline'];
       delete item['color'];
-      delete item['coinrankingUrl'];
       delete item['listedAt'];
     });
 

@@ -1,4 +1,10 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  forwardRef,
+  Inject,
+  Injectable
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AuthService } from '@auth/auth.service';
 import { CorruptedTokenException } from '@auth/exceptions/corrupted-token.exception';
@@ -12,7 +18,10 @@ interface ITokenPayload {
 
 @Injectable()
 export class JwtGuard implements CanActivate {
-  constructor(private authService: AuthService) {}
+  constructor(
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService
+  ) {}
 
   canActivate(
     context: ExecutionContext

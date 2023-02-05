@@ -326,6 +326,60 @@ paths:
       responses:
         "200":
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCoinByNameResponse"
+      tags: *a3
+  /api/crypto/favorite/add:
+    post:
+      operationId: CryptoController_addToFavorite
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddToFavoriteRequest"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddToFavoriteResponse"
+      tags: *a3
+  /api/crypto/favorite/remove:
+    post:
+      operationId: CryptoController_removeFromFavorite
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RemoveFromFavoriteRequest"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RemoveFromFavoriteResponse"
+      tags: *a3
+  /api/crypto/all-favorites:
+    get:
+      operationId: CryptoController_getAllFavorites
+      summary: ""
+      description: ""
+      parameters: []
+      responses:
+        "200":
+          description: ""
       tags: *a3
   /api/twofactor/set:
     post:
@@ -736,6 +790,8 @@ components:
     CryptocurrencyDto:
       type: object
       properties:
+        coinrankingUrl:
+          type: string
         tier:
           type: number
         id:
@@ -771,6 +827,7 @@ components:
           format: date-time
           type: string
       required:
+        - coinrankingUrl
         - tier
         - id
         - uuid
@@ -785,6 +842,62 @@ components:
         - btcPrice
         - change
         - rank
+        - updatedAt
+        - createdAt
+    GetCoinByNameResponse:
+      type: object
+      properties:
+        coin:
+          type: object
+      required:
+        - coin
+    AddToFavoriteRequest:
+      type: object
+      properties:
+        cryptocurrencyId:
+          type: string
+      required:
+        - cryptocurrencyId
+    AddToFavoriteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    RemoveFromFavoriteRequest:
+      type: object
+      properties:
+        cryptocurrencyId:
+          type: string
+      required:
+        - cryptocurrencyId
+    RemoveFromFavoriteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    FavoriteCoinsDto:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        cryptocurrencyId:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - userId
+        - cryptocurrencyId
         - updatedAt
         - createdAt
     TwoFaDto:

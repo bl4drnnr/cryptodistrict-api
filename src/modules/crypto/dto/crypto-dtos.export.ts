@@ -2,3 +2,8 @@ export * from './all/response.dto';
 export * from './all/request.dto';
 export * from './coin/request.dto';
 export * from './coin/response.dto';
+export * from './add-to-favorite/request.dto';
+export * from './add-to-favorite/response.dto';
+export * from './remove-from-favorite/request.dto';
+export * from './remove-from-favorite/response.dto';
+export * from './all-favorites/response.dto';

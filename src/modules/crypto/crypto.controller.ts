@@ -1,13 +1,21 @@
 import { CryptoService } from '@crypto/crypto.service';
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import {
   GetAllCoinsRequest,
   GetAllCoinsResponse,
   GetCoinByNameRequest,
-  GetCoinByNameResponse
+  GetCoinByNameResponse,
+  AddToFavoriteRequest,
+  AddToFavoriteResponse,
+  RemoveFromFavoriteRequest,
+  RemoveFromFavoriteResponse,
+  AllFavoritesResponse
 } from '@crypto/dto/crypto-dtos.export';
 import { CryptocurrencyDto } from '@dto/cryptocurrency.dto';
+import { JwtGuard } from '@guards/jwt.guard';
+import { UserDecorator } from '@decorators/user.decorator';
+import { FavoriteCoinsDto } from '@dto/favorite-coins.dto';
 
 @ApiTags('Cryptocurrencies')
 @Controller('crypto')
@@ -26,6 +34,37 @@ export class CryptoController {
   async getCoinByName(@Param() { name }: GetCoinByNameRequest) {
     const coin = await this.cryptoService.getCoinByName({ name });
 
-    // return new GetCoinByNameResponse(coin);
+    return new GetCoinByNameResponse(coin);
+  }
+
+  @Post('favorite/add')
+  @UseGuards(JwtGuard)
+  async addToFavorite(
+    @Body() { cryptocurrencyId }: AddToFavoriteRequest,
+    @UserDecorator() userId: string
+  ) {
+    await this.cryptoService.addToFavorite({ cryptocurrencyId, userId });
+
+    return new AddToFavoriteResponse();
+  }
+
+  @Post('favorite/remove')
+  @UseGuards(JwtGuard)
+  async removeFromFavorite(
+    @Body() { cryptocurrencyId }: RemoveFromFavoriteRequest,
+    @UserDecorator() userId: string
+  ) {
+    await this.cryptoService.removeFromFavorite({ cryptocurrencyId, userId });
+
+    return new RemoveFromFavoriteResponse();
+  }
+
+  @ApiExtraModels(FavoriteCoinsDto)
+  @Get('all-favorites')
+  @UseGuards(JwtGuard)
+  async getAllFavorites(@UserDecorator() userId: string) {
+    const allFavorites = await this.cryptoService.getAllFavorites({ userId });
+
+    // return new AllFavoritesResponse(allFavorites);
   }
 }
