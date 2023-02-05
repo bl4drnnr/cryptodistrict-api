@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ApiConfigService } from '@shared/config.service';
 import { PrismaService } from '@shared/prisma.service';
 import { HttpService } from '@shared/http.service';
-import { CoinNotFoundException } from '@crypto/exceptions/crypto-exceptions.export';
+import {
+  CoinNotFoundException,
+  NoUserCoinException
+} from '@crypto/exceptions/crypto-exceptions.export';
 
 @Injectable()
 export class CryptoService {
@@ -15,6 +18,11 @@ export class CryptoService {
   async getAllCoins({ page, limit }: { page: string; limit: string }) {
     const parsedPage = parseInt(page);
     const parsedLimit = parseInt(limit);
+
+    return await this.prisma.cryptocurrency.findMany({
+      skip: parseInt(page),
+      take: parseInt(limit)
+    });
   }
 
   async getCoinByName({ name }: { name: string }) {
@@ -58,6 +66,18 @@ export class CryptoService {
     cryptocurrencyId: string;
     userId: string;
   }) {
+    const coin = await this.prisma.cryptocurrency.findFirst({
+      where: { id: cryptocurrencyId }
+    });
+
+    if (!coin) throw new CoinNotFoundException();
+
+    const userFavoriteCoin = await this.prisma.favoriteCoins.findFirst({
+      where: { userId, cryptocurrencyId }
+    });
+
+    if (!userFavoriteCoin) throw new NoUserCoinException();
+
     return await this.prisma.favoriteCoins.delete({
       where: { userId, cryptocurrencyId }
     });

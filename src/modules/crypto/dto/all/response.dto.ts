@@ -1,11 +1,9 @@
-interface ICoin {
-  name: string;
-}
+import { CryptocurrencyDto } from '@dto/cryptocurrency.dto';
 
 export class GetAllCoinsResponse {
-  constructor(coins: ICoin[]) {
+  constructor(coins: CryptocurrencyDto[]) {
     this.coins = coins;
   }
 
-  private readonly coins: ICoin[];
+  private readonly coins: CryptocurrencyDto[];
 }

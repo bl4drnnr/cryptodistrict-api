@@ -27,7 +27,7 @@ export class CryptoController {
   async getAllCryptocurrencies(@Param() { page, limit }: GetAllCoinsRequest) {
     const allCoins = await this.cryptoService.getAllCoins({ page, limit });
 
-    // return new GetAllCoinsResponse(allCoins);
+    return new GetAllCoinsResponse(allCoins);
   }
 
   @Get('coin/:name')
