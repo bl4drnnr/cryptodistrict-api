@@ -56,13 +56,16 @@ export class UpdateRatesWebjob {
     const coinsList = cryptocurrencies.data.coins;
 
     const filteredCoins = coinsList.map((o) => {
-      return { ...o, Volume24h: o['24hVolume'] };
+      return {
+        ...o,
+        Volume24h: o['24hVolume'],
+        sparkline: o['sparkline'].toString()
+      };
     });
 
     filteredCoins.forEach((item) => {
       delete item['24hVolume'];
       delete item['lowVolume'];
-      delete item['sparkline'];
       delete item['color'];
       delete item['listedAt'];
     });

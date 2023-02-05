@@ -291,7 +291,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/VerifyPhoneResponse"
       tags: *a2
-  "/api/crypto/all/{page}/{limit}":
+  "/api/crypto/all/{page}/{limit}/{sort}":
     get:
       operationId: CryptoController_getAllCryptocurrencies
       summary: ""
@@ -794,6 +794,8 @@ components:
     CryptocurrencyDto:
       type: object
       properties:
+        sparkline:
+          type: string
         coinrankingUrl:
           type: string
         tier:
@@ -831,6 +833,7 @@ components:
           format: date-time
           type: string
       required:
+        - sparkline
         - coinrankingUrl
         - tier
         - id

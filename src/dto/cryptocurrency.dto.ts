@@ -3,6 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CryptocurrencyDto implements Cryptocurrency {
   @ApiProperty()
+  sparkline: string;
+  @ApiProperty()
   coinrankingUrl: string;
   @ApiProperty()
   tier: number;

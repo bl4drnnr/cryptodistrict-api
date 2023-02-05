@@ -23,9 +23,15 @@ export class CryptoController {
   constructor(private readonly cryptoService: CryptoService) {}
 
   @ApiExtraModels(CryptocurrencyDto)
-  @Get('all/:page/:limit')
-  async getAllCryptocurrencies(@Param() { page, limit }: GetAllCoinsRequest) {
-    const allCoins = await this.cryptoService.getAllCoins({ page, limit });
+  @Get('all/:page/:limit/:sort')
+  async getAllCryptocurrencies(
+    @Param() { page, limit, sort }: GetAllCoinsRequest
+  ) {
+    const allCoins = await this.cryptoService.getAllCoins({
+      page,
+      limit,
+      sort
+    });
 
     return new GetAllCoinsResponse(allCoins);
   }
