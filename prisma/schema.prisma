@@ -127,6 +127,7 @@ model Cryptocurrency {
     btcPrice        String  @map("btc_price")
     change          String
     coinrankingUrl  String  @map("coinranking_url")
+    sparkline       String
     rank            Int
     tier            Int
 

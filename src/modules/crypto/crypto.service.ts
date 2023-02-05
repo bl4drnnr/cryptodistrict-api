@@ -15,11 +15,44 @@ export class CryptoService {
     private readonly httpService: HttpService
   ) {}
 
-  async getAllCoins({ page, limit }: { page: string; limit: string }) {
-    return await this.prisma.cryptocurrency.findMany({
+  async getAllCoins({
+    page,
+    limit,
+    sort
+  }: {
+    page: string;
+    limit: string;
+    sort: string;
+  }) {
+    let orderBy: object;
+
+    switch (sort) {
+      case 'sortByName':
+        orderBy = { name: 'asc' };
+        break;
+      case 'sortByTier':
+        orderBy = { tier: 'asc' };
+        break;
+      case 'sortByRank':
+        orderBy = { rank: 'asc' };
+        break;
+      case 'sortByCap':
+        orderBy = { marketCap: 'asc' };
+        break;
+      default:
+        orderBy = { name: 'asc' };
+        break;
+    }
+
+    const coinsCount = await this.prisma.cryptocurrency.findMany();
+
+    const coins = await this.prisma.cryptocurrency.findMany({
+      orderBy,
       skip: (parseInt(page) - 1) * parseInt(limit),
       take: parseInt(limit)
     });
+
+    return { coins, count: coinsCount.length };
   }
 
   async getCoinByName({ name }: { name: string }) {
