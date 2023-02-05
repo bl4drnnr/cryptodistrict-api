@@ -1,9 +1,8 @@
 import { CryptocurrencyDto } from '@dto/cryptocurrency.dto';
 
-export class GetAllCoinsResponse {
+export class AllFavoritesResponse {
   constructor(coins: CryptocurrencyDto[]) {
     this.coins = coins;
   }
-
-  private readonly coins: CryptocurrencyDto[];
+  coins: CryptocurrencyDto[];
 }
