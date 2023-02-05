@@ -27,13 +27,13 @@ export class CryptoController {
   async getAllCryptocurrencies(
     @Param() { page, limit, sort }: GetAllCoinsRequest
   ) {
-    const allCoins = await this.cryptoService.getAllCoins({
+    const { coins, count } = await this.cryptoService.getAllCoins({
       page,
       limit,
       sort
     });
 
-    return new GetAllCoinsResponse(allCoins);
+    return new GetAllCoinsResponse(coins, count);
   }
 
   @Get('coin/:name')

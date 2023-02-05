@@ -44,11 +44,15 @@ export class CryptoService {
         break;
     }
 
-    return await this.prisma.cryptocurrency.findMany({
+    const coinsCount = await this.prisma.cryptocurrency.findMany();
+
+    const coins = await this.prisma.cryptocurrency.findMany({
       orderBy,
       skip: (parseInt(page) - 1) * parseInt(limit),
       take: parseInt(limit)
     });
+
+    return { coins, count: coinsCount.length };
   }
 
   async getCoinByName({ name }: { name: string }) {

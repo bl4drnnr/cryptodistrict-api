@@ -858,8 +858,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CryptocurrencyDto"
+        count:
+          type: number
       required:
         - coins
+        - count
     GetCoinByNameResponse:
       type: object
       properties:
