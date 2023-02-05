@@ -736,9 +736,11 @@ components:
     CryptocurrencyDto:
       type: object
       properties:
+        tier:
+          type: number
         id:
           type: string
-        cryptoId:
+        uuid:
           type: string
         symbol:
           type: string
@@ -769,8 +771,9 @@ components:
           format: date-time
           type: string
       required:
+        - tier
         - id
-        - cryptoId
+        - uuid
         - symbol
         - name
         - description

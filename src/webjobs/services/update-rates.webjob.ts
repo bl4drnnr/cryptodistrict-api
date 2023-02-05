@@ -53,6 +53,28 @@ export class UpdateRatesWebjob {
         }
       }
     );
+    const coinsList = cryptocurrencies.data.coins;
+
+    const filteredCoins = coinsList.map((o) => {
+      return { ...o, Volume24h: o['24hVolume'] };
+    });
+
+    filteredCoins.forEach((item) => {
+      delete item['24hVolume'];
+      delete item['lowVolume'];
+      delete item['sparkline'];
+      delete item['color'];
+      delete item['coinrankingUrl'];
+      delete item['listedAt'];
+    });
+
+    filteredCoins.map(async (item) => {
+      await this.prisma.cryptocurrency.upsert({
+        where: { uuid: item.uuid },
+        update: { ...item },
+        create: { ...item }
+      });
+    });
 
     return this.loggerService
       .loggerInstance()

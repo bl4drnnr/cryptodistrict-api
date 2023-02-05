@@ -55,7 +55,7 @@ model VerificationCodes {
     updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
     createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
-    @@map("verificationCodes")
+    @@map("verification_codes")
 }
 
 model ConfirmationHashes {
@@ -69,7 +69,7 @@ model ConfirmationHashes {
     updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
     createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
-    @@map("confirmationHashes")
+    @@map("confirmation_hashes")
 }
 
 model Sessions {
@@ -112,20 +112,21 @@ model TwoFa {
 }
 
 model Cryptocurrency {
-    id          String @id @default(uuid()) @db.Uuid
+    id          String  @id @default(uuid()) @db.Uuid
 
-    uuid        String @map("uuid")
+    uuid        String  @map("uuid") @unique
     symbol      String
     name        String
     description String?
-    iconUrl     String @map("icon_url")
-    websiteUrl  String @map("website_url")
-    Volume24h   String @map("volume_24h")
-    marketCap   String @map("market_cap")
+    iconUrl     String  @map("icon_url")
+    websiteUrl  String? @map("website_url")
+    Volume24h   String  @map("volume_24h")
+    marketCap   String  @map("market_cap")
     price       String
-    btcPrice    String @map("btc_price")
+    btcPrice    String  @map("btc_price")
     change      String
     rank        Int
+    tier        Int
 
     updatedAt DateTime @default(now()) @map("updated_at") @updatedAt @db.Timestamptz(6)
     createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
