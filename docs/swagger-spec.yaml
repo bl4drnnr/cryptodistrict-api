@@ -241,14 +241,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UnbindPhoneRequest"
+              $ref: "#/components/schemas/RemovePhoneRequest"
       responses:
         "201":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UnbindPhoneResponse"
+                $ref: "#/components/schemas/RemovePhoneResponse"
       tags: &a2
         - Phone
   /api/phone/confirm:
@@ -262,14 +262,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PhoneConfirmationRequest"
+              $ref: "#/components/schemas/SetPhoneRequest"
       responses:
         "201":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PhoneConfirmationResponse"
+                $ref: "#/components/schemas/SetPhoneResponse"
       tags: *a2
   /api/phone/verify:
     post:
@@ -710,10 +710,10 @@ components:
     ChangeEmailResponse:
       type: object
       properties: {}
-    UnbindPhoneRequest:
+    RemovePhoneRequest:
       type: object
       properties: {}
-    UnbindPhoneResponse:
+    RemovePhoneResponse:
       type: object
       properties:
         message:
@@ -765,7 +765,7 @@ components:
         - confirmed
         - updatedAt
         - createdAt
-    PhoneConfirmationRequest:
+    SetPhoneRequest:
       type: object
       properties:
         code:
@@ -774,7 +774,7 @@ components:
           maxLength: 6
       required:
         - code
-    PhoneConfirmationResponse:
+    SetPhoneResponse:
       type: object
       properties:
         message:

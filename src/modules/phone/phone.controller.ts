@@ -4,10 +4,10 @@ import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { PhoneDto } from '@dto/phone.dto';
 import { VerificationCodeDto } from '@dto/verification-code.dto';
 import {
-  PhoneConfirmationRequest,
-  PhoneConfirmationResponse,
-  UnbindPhoneRequest,
-  UnbindPhoneResponse,
+  SetPhoneRequest,
+  SetPhoneResponse,
+  RemovePhoneRequest,
+  RemovePhoneResponse,
   VerifyPhoneRequest,
   VerifyPhoneResponse
 } from './dto/phone-dtos.export';
@@ -17,19 +17,19 @@ import {
 export class PhoneController {
   constructor(private readonly phoneService: PhoneService) {}
 
-  @Post('unbind')
-  async unbindPhone(@Body() payload: UnbindPhoneRequest) {
-    await this.phoneService.unbindMobilePhoneNumber(payload);
+  @ApiExtraModels(PhoneDto, VerificationCodeDto)
+  @Post('set')
+  async setPhone(@Body() payload: SetPhoneRequest) {
+    await this.phoneService.setMobilePhoneNumber(payload);
 
-    return new UnbindPhoneResponse();
+    return new SetPhoneResponse();
   }
 
-  @ApiExtraModels(PhoneDto, VerificationCodeDto)
-  @Post('confirm')
-  async confirmPhone(@Body() payload: PhoneConfirmationRequest) {
-    await this.phoneService.confirmMobilePhoneNumber(payload);
+  @Post('remove')
+  async removePhone(@Body() payload: RemovePhoneRequest) {
+    await this.phoneService.removeMobilePhoneNumber(payload);
 
-    return new PhoneConfirmationResponse();
+    return new RemovePhoneResponse();
   }
 
   @Post('verify')

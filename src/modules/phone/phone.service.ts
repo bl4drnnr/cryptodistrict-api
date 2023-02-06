@@ -4,8 +4,8 @@ import { TwilioService } from 'nestjs-twilio';
 import { ApiConfigService } from '@shared/config.service';
 import {
   VerifyPhoneRequest,
-  PhoneConfirmationRequest,
-  UnbindPhoneRequest
+  SetPhoneRequest,
+  RemovePhoneRequest
 } from './dto/phone-dtos.export';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class PhoneService {
     private readonly configService: ApiConfigService
   ) {}
 
-  async unbindMobilePhoneNumber(unbindPhoneRequest: UnbindPhoneRequest) {
+  async removeMobilePhoneNumber(unbindPhoneRequest: RemovePhoneRequest) {
     //
   }
 
@@ -24,8 +24,8 @@ export class PhoneService {
     //
   }
 
-  async confirmMobilePhoneNumber(
-    phoneConfirmationRequest: PhoneConfirmationRequest
+  async setMobilePhoneNumber(
+    phoneConfirmationRequest: SetPhoneRequest
   ) {
     //
   }

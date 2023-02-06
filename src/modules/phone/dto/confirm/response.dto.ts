@@ -1,4 +1,4 @@
-export class PhoneConfirmationResponse {
+export class SetPhoneResponse {
   constructor(message = 'success') {
     this.message = message;
   }
