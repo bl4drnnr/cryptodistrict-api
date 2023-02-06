@@ -34,6 +34,30 @@ to join database and API in one container with externally exposed ports.
 
 ### Endpoints
 
+There are 5 main controllers that have been implemented - `Auth`, `Crypto`, `Phone`, `TwoFactor`, `User`.
+Every controller is responsible for handling requests and responses of its zone of responsibility.
+Here is the list of endpoints that have been implemented for every controller.
+
+- `Auth`
+  -
+  - `GET /refresh` - endpoint is responsible for refreshing user's tokens.
+
+- `Crypto`
+  - 
+  - `GET /all/:page/:limit/:sort` - gets all assets from database. Requires params `page` and `limit` for pagination and `sort` for type of sorting.
+  - `GET /coin/:name` - gets 1 coin from database by name
+  - `POST /favorite/add` - if user authenticated, adds a coin to favorite list
+  - `POST /favorite/remove` - if user authenticated, removes a coin to favorite list
+  - `GET /all-favorites`- if user authenticated, gets all coins from favorite list
+  
+- `Phone`
+- `TwoFactor`
+- `User`
+
+More information you can find in folder with [documentation](docs) or by using `/docs` endpoint for API.
+
+**P.S.** `/docs` endpoint doesn't require any authentication. It has been excluded from middleware.
+
 ### Documentation
 
 Swagger and OpenAPI are both industry-standard specifications for describing RESTful APIs. They allow developers to define the structure and behavior of an API, including the endpoints, request and response formats, and authentication methods.
