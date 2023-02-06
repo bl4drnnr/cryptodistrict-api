@@ -1,3 +1,3 @@
-export class UnbindPhoneRequest {
+export class RemovePhoneRequest {
   constructor() {}
 }

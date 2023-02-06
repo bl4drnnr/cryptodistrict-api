@@ -51,10 +51,33 @@ Here is the list of endpoints that have been implemented for every controller.
   - `GET /all-favorites`- if user authenticated, gets all coins from favorite list
   
 - `Phone`
+  -
+  - `POST /set` - sets user's phone from account (alternative way of MFA)
+  - `POST /remove` - removes user's phone from account 
+  - `POST /verify` - verifies user's phone by checking the code
+
 - `TwoFactor`
+  - 
+  - `POST /set` - sets MFA (Google Authenticator) for user account
+  - `POST /remove` - removes MFA (Google Authenticator) for user account
+
 - `User`
+  - 
+  - `POST /sign-in` - login
+  - `POST /sign-up` - registration
+  - `POST /logout` - logout (removes token from database)
+  - `GET /account-confirmation/:confirmHash` - confirms account while registration process
+  - `GET /get-settings` - get all user's settings (security, personal and notifications)
+  - `GET /get-user/:userNumber` - gets user by personal number (generated randomly while registration)
+  - `PATCH /set-personal-settings` - sets user's personal settings after change
+  - `PATCH /set-notification-settings` - sets user's notification settings after change
+  - `PATCH /freeze-account` - security settings, freezing account (can be restored)
+  - `PATCH /close-account` - security settings, freezing account (can't be restored)
+  - `PATCH /change-password` - security settings, changes password, some function will be restricted for a while after
+  - `PATCH /change-email` - security settings, changes email, available only one time
 
 More information you can find in folder with [documentation](docs) or by using `/docs` endpoint for API.
+There, you fill be able to find documentation in `OpenAPI` format with request bodies, responses and types of data.
 
 **P.S.** `/docs` endpoint doesn't require any authentication. It has been excluded from middleware.
 
@@ -66,7 +89,7 @@ Swagger, now known as the OpenAPI specification, is a set of rules and conventio
 
 OpenAPI, formerly known as the Swagger specification, is the open-source implementation of the specification. It is a specification for building APIs, and it provides a simple and uniform way for describing the RESTful APIs. OpenAPI is a specification and not a framework, it can be used with any framework or language, and it has a wide range of tools and libraries to support it. It is used by many companies and organizations to document and test their APIs.
 
-Documentation for this API is available under `/api/docs` URL address.
+Documentation for this API is available under `/docs` URL address.
 
 ### Logging implementation
 

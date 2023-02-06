@@ -1,4 +1,4 @@
-export class UnbindPhoneResponse {
+export class RemovePhoneResponse {
   constructor(message = 'success') {
     this.message = message;
   }
