@@ -230,30 +230,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/ChangeEmailResponse"
       tags: *a1
-  /api/phone/unbind:
+  /api/phone/set:
     post:
-      operationId: PhoneController_unbindPhone
-      summary: ""
-      description: ""
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RemovePhoneRequest"
-      responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RemovePhoneResponse"
-      tags: &a2
-        - Phone
-  /api/phone/confirm:
-    post:
-      operationId: PhoneController_confirmPhone
+      operationId: PhoneController_setPhone
       summary: ""
       description: ""
       parameters: []
@@ -270,6 +249,27 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SetPhoneResponse"
+      tags: &a2
+        - Phone
+  /api/phone/remove:
+    post:
+      operationId: PhoneController_removePhone
+      summary: ""
+      description: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RemovePhoneRequest"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RemovePhoneResponse"
       tags: *a2
   /api/phone/verify:
     post:
@@ -710,16 +710,6 @@ components:
     ChangeEmailResponse:
       type: object
       properties: {}
-    RemovePhoneRequest:
-      type: object
-      properties: {}
-    RemovePhoneResponse:
-      type: object
-      properties:
-        message:
-          type: string
-      required:
-        - message
     PhoneDto:
       type: object
       properties:
@@ -775,6 +765,16 @@ components:
       required:
         - code
     SetPhoneResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    RemovePhoneRequest:
+      type: object
+      properties: {}
+    RemovePhoneResponse:
       type: object
       properties:
         message:
