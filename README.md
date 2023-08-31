@@ -156,7 +156,6 @@ networks:
 
 - Developer contact - [contact@mikhailbahdashych.me](mailto:contact@mikhailbahdashych.me)
 - Project's front-end - [repository link](https://github.com/bl4drnnr/cryptodistrict-front)
-- Project's infrastructure - [repository link](https://github.com/bl4drnnr/cryptodistrict-infrastructure)
 
 ### License
 
